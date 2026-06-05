@@ -142,6 +142,70 @@ cobra command invoked with _carapace subcommand
     references/shell-zsh.md      Zsh deep dive
     references/pflag.md          carapace-pflag extensions (from carapace-pflag repo)
     references/bridge.md         carapace-bridge internals (from carapace-bridge repo)
+  bash/                      Bash shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Bash programmable completion
+    references/readline.md         GNU Readline library
+    references/quoting-expansion.md Quoting and expansion rules
+    references/execution.md        Execution model and signals
+    references/startup.md          Startup files and configuration
+  bash-ble/                  Bash BLE (ble.sh) in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       BLE completion system (cand/yield, sources, actions, progcomp, menu styles, menu-filter, auto-complete, sabbrev, dabbrev)
+    references/syntax-highlighting.md Syntax parser, faces, gspec colors
+    references/editor.md           Editor architecture, widgets, keymaps, key binding, terminal rendering
+    references/startup-config.md   Installation, blerc, bleopt, blehook, ble-import, XDG paths
+  cmd-clink/                 Clink/cmd.exe in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/argmatcher.md       Clink argmatcher Lua API
+    references/completion.md       Clink completion system
+    references/line-editing.md     Readline integration and key bindings
+    references/cmd-integration.md  cmd.exe integration and prompt
+    references/coloring.md         Input line coloring and classification
+    references/suggestions.md      Auto-suggestions
+    references/history.md          History system
+    references/scripting.md        Lua scripting system
+  elvish/                    Elvish shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Elvish completion system
+    references/editor.md           Editor API and modes
+    references/styling.md          Styled text and colors
+    references/language.md         Language fundamentals
+    references/startup-config.md   Startup and configuration
+  xonsh/                     Xonsh shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Xonsh completion system
+    references/prompt-toolkit.md   Prompt-toolkit integration
+    references/language-execution.md Python/shell hybrid model and execution
+    references/startup-config.md   Startup, configuration, and events
+  fish/                      Fish shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Fish completion system
+    references/editor.md           Editor, key bindings, autosuggestions, pager
+    references/language.md         Language fundamentals, quoting, variables, builtins
+    references/execution.md        Execution model, job control, threading
+    references/startup-config.md   Startup, configuration, XDG paths
+  powershell/                PowerShell shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       PowerShell tab completion system
+    references/editor.md           PSReadLine, key bindings, menu completion, prediction
+    references/styling.md          ANSI escape sequences, $PSStyle, terminal rendering
+    references/language.md         Quoting rules, argument passing, language fundamentals
+    references/startup-config.md   Profiles, configuration, execution policy
+  tcsh/                      Tcsh shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Tcsh programmable completion, complete builtin, COMMAND_LINE
+    references/editor.md           Command-line editor, bindkey, key bindings, prompts
+    references/quoting-expansion.md Quoting, variable expansion, history expansion, globbing
+    references/execution.md        Execution model, job control, signals, control flow
+    references/startup-config.md   Startup files, shell variables, environment variables
+  oil/                       Oil shell (OSH/YSH) in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Oil programmable completion, COMP_ARGV, compadjust, compexport, OILS_COMP_UI
+    references/line-editing.md     Readline, NiceDisplay, prompt, history, alias handling
+    references/quoting-expansion.md Quoting, word splitting, simple word evaluation, globbing
+    references/execution.md        Execution model, lastpipe, signals, traps, xtrace_rich
+    references/startup-config.md   Startup files, shell options, strict:all, ysh:all
 ```
 
 ## Conventions
@@ -290,7 +354,7 @@ Key env vars (see `internal/env/env.go`):
 
 ## Shell Skill Maintenance
 
-Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). Minor shells (tcsh, ion, cmd-clink, export) are covered only in `references/shell.md`.
+Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). Minor shells (ion, export) are covered only in `references/shell.md`. Bash, cmd-clink, elvish, xonsh, fish, powershell, tcsh, and oil have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`) for in-depth shell knowledge beyond carapace integration.
 
 ### Structure
 
