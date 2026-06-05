@@ -40,6 +40,10 @@ func (s *Sandbox) Keep() {
 	s.keep = true
 }
 
+func (s *Sandbox) Dir() string {
+	return s.mock.WorkDir()
+}
+
 func (s *Sandbox) Env(key, value string) {
 	s.env[key] = value
 }
