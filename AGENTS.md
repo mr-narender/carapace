@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Carapace is a Go library that provides command argument completion for [spf13/cobra](https://github.com/spf13/cobra)-based CLI applications. It generates shell completion scripts and handles runtime completion callbacks for 12 shells: bash, bash-ble, cmd-clink, elvish, export, fish, ion, nushell, oil, powershell, tcsh, xonsh, and zsh.
+Carapace is a Go library that provides command argument completion for [spf13/cobra](https://github.com/spf13/cobra)-based CLI applications. It generates shell completion scripts and handles runtime completion callbacks for 11 shells: bash, bash-ble, cmd-clink, elvish, fish, ion, nushell, oil, powershell, tcsh, xonsh, and zsh.
 
 This is the **core library** (`github.com/carapace-sh/carapace`). Companion projects:
 - `carapace-bin` — pre-built completions for 500+ commands
@@ -319,9 +319,9 @@ The `go.work` file adds `./example-nonposix` as a separate module. CI tests both
 
 Storage mutations make `t.Parallel()` unsafe. There are TODO comments about this in sandbox code.
 
-### The `export` shell target
+### The `export` output format
 
-`internal/shell/export/` outputs completion results as JSON. The `_carapace` subcommand re-invokes itself with the `export` shell to resolve subcommand completions.
+`internal/shell/export/` is **not a shell** — it is the raw JSON output of an `InvokedAction` (the `Export` struct in `internal/export/`). It enables bridging, embedding, and caching of completions across process boundaries. The `_carapace` subcommand re-invokes itself with the `export` format to resolve subcommand completions, then parses the JSON with `ActionImport`. Cache files also use this format.
 
 ### third_party/ is excluded from linting
 
@@ -354,7 +354,7 @@ Key env vars (see `internal/env/env.go`):
 
 ## Shell Skill Maintenance
 
-Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). Minor shells (ion, export) are covered only in `references/shell.md`. Bash, cmd-clink, elvish, xonsh, fish, powershell, tcsh, and oil have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`) for in-depth shell knowledge beyond carapace integration.
+Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). The `export` format is covered in `references/export.md` (it is not a shell — it is the raw JSON output of an `InvokedAction` for bridging/embedding/caching). Ion is covered only in `references/shell.md`. Bash, cmd-clink, elvish, xonsh, fish, powershell, tcsh, and oil have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`) for in-depth shell knowledge beyond carapace integration.
 
 ### Structure
 

@@ -100,9 +100,9 @@ func ActionImport(output string) Action {
 
 Used by the `_carapace export` subcommand to re-import completions.
 
-## The export Shell
+## The `export` Output Format
 
-The `export` shell target in `complete()` re-invokes the `_carapace` command with `export` as the shell argument:
+The `export` format is **not a shell** — it is the raw JSON output of an `InvokedAction`. The `export` target in `complete()` re-invokes the `_carapace` command with `export` as the shell argument:
 
 ```go
 if shell == "export" {
@@ -111,7 +111,7 @@ if shell == "export" {
 }
 ```
 
-This enables subcommand completion to work across process boundaries — the parent process re-invokes itself with the `export` shell to resolve nested subcommand completions, then parses the JSON.
+This enables subcommand completion to work across process boundaries — the parent process re-invokes itself with the `export` format to resolve nested subcommand completions, then parses the JSON with `ActionImport`. The same format is also used for caching (cache files store `Export` JSON) and bridging (embedding completions from other commands).
 
 ## RawValue Structure
 
