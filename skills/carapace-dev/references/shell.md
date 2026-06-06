@@ -1,6 +1,6 @@
 # Carapace Library: Per-Shell Output Formatting
 
-Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specific completion output — how `RawValues` and `Meta` are formatted for each of the 12 supported shells, and how the shells differ.
+Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specific completion output — how `RawValues` and `Meta` are formatted for each of the 11 supported shells, and how the shells differ.
 
 ## Supported Shells
 
@@ -18,7 +18,8 @@ Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specif
 | Tcsh | `tcsh` | `internal/shell/tcsh/` | **tcsh** skill |
 | Xonsh | `xonsh` | `internal/shell/xonsh/` | `references/shell-xonsh.md` |
 | Zsh | `zsh` | `internal/shell/zsh/` | `references/shell-zsh.md` |
-| Export (JSON) | `export` | `internal/shell/export/` | — |
+
+> **Note:** `export` (`internal/shell/export/`) is **not a shell** — it is the raw JSON output format of an `InvokedAction` (the `Export` struct). It is used for bridging, embedding, and caching completions across process boundaries. See `references/export.md`.
 
 ## Shared Dispatch: `shell.Value()`
 
@@ -27,7 +28,7 @@ Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specif
 1. **Color disable**: if `env.ColorDisabled()`, strips styles and sets fallback styles
 2. **Prefix filtering**: `values.FilterPrefix(value)` unless `CARAPACE_UNFILTERED` is set
 3. **Flag merging**: merges "shorthand flags"/"longhand flags" tags into "flags" — implicit for zsh, explicit via `CARAPACE_MERGEFLAGS`
-4. **Message integration**: for shells without native message support (not elvish/export/zsh), messages are injected as synthetic `RawValue` entries (styled with `style.Carapace.Error`)
+4. **Message integration**: for shells without native message support (not elvish/zsh), messages are injected as synthetic `RawValue` entries (styled with `style.Carapace.Error`). The `export` format also carries messages natively in its JSON `Messages` field.
 5. **Nospace propagation**: if messages exist or `CARAPACE_NOSPACE` is set, add `*` to nospace set
 6. **Sort + dedup**: `sort.Sort(ByDisplay(values))` → clear UIDs → `values.Unique()`
 
@@ -61,13 +62,30 @@ Each shell package has a `Snippet(cmd *cobra.Command) string` function that gene
 
 ### Secondary Shells
 
-| Feature | Tcsh | Ion | Clink | Export |
-|---------|------|-----|-------|--------|
-| **Output format** | Values on lines, backslash-escaped | JSON `{Value, Display}` | Tab-delimited `value\tdisplay\tdesc\tsuffix` | JSON `{"Version","Meta","Values"}` |
-| **Nospace** | Built-in support | Trailing space in `Value` | Per-candidate `appendchar` field | N/A (JSON styles) |
-| **Style/color** | Not supported | Not supported | Not supported | JSON styles |
-| **Go-side patching** | None | None | `cmd_clink.Patch()` (redirects via CARAPACE_COMPLINE) | None |
-| **Snippet** | `complete` with `$COMMAND_LINE` | Empty (no snippet) | Lua function with `CARAPACE_COMPLINE` | N/A (internal use) |
+| Feature | Tcsh | Ion | Clink |
+|---------|------|-----|-------|
+| **Output format** | Values on lines, backslash-escaped | JSON `{Value, Display}` | Tab-delimited `value\tdisplay\tdesc\tsuffix` |
+| **Nospace** | Built-in support | Trailing space in `Value` | Per-candidate `appendchar` field |
+| **Style/color** | Not supported | Not supported | Not supported |
+| **Go-side patching** | None | None | `cmd_clink.Patch()` (redirects via CARAPACE_COMPLINE) |
+| **Snippet** | `complete` with `$COMMAND_LINE` | Empty (no snippet) | Lua function with `CARAPACE_COMPLINE` |
+
+### Export Format
+
+The `export` format (`internal/shell/export/`) is not a shell — it is the raw JSON output of an `InvokedAction` (the `Export` struct in `internal/export/`). It serializes the full completion result (version, meta, values) as JSON for:
+
+- **Bridging**: `ActionImport` parses JSON from another process to re-import completions
+- **Caching**: cache files store `Export` JSON to restore completions with full meta
+- **Subcommand dispatch**: the `_carapace` subcommand re-invokes itself with the `export` format to resolve nested subcommand completions across process boundaries
+
+| Feature | Export |
+|---------|--------|
+| **Output format** | JSON `{"Version","Meta","Values"}` |
+| **Nospace** | JSON `Nospace` field (not a shell concern) |
+| **Style/color** | JSON styles |
+| **Go-side patching** | None |
+| **Snippet** | N/A (not a shell) |
+| **Messages** | JSON `Messages` field (native) |
 
 ## Nospace Handling Comparison
 
@@ -93,7 +111,7 @@ Each shell handles "no trailing space" differently:
 |-------|----------|----------------|
 | Zsh | `_message -r` builtin | Yes |
 | Elvish | `edit:notify` command | Yes |
-| Export | JSON `Messages` field | Yes |
+| Export | JSON `Messages` field | Yes (not a shell — raw output format) |
 | All others | Integrated as synthetic `ERR` values via `meta.Messages.Integrate()` | No |
 
 ## Go-Side Patching Comparison
@@ -136,3 +154,4 @@ All other shells pass arguments directly to `traverse()` without patching.
 - **carapace-bin skill** (carapace-bin repo) — installation and shell integration (user-facing)
 - **references/traverse.md** — the completion engine that produces Actions before formatting
 - **references/style.md** — how styles are resolved before shell rendering
+- **references/export.md** — the JSON wire format (not a shell — raw output for bridging/embedding/caching)
