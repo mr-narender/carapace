@@ -213,6 +213,13 @@ cobra command invoked with _carapace subcommand
     references/quoting-expansion.md Quoting, word splitting, simple word evaluation, globbing
     references/execution.md        Execution model, lastpipe, signals, traps, xtrace_rich
     references/startup-config.md   Startup files, shell options, strict:all, ysh:all
+  hilbish/                   Hilbish shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Hilbish completion system, hilbish.completions, TabCompleter, carapace integration
+    references/line-editing.md     Readline, hilbish.editor, vim mode, syntax highlighting, hints
+    references/language.md         Lua API, GopherLua, bait events, runner mode, commander, lunacolors, yarn
+    references/execution.md        Execution model, job control, signals, runner dispatch
+    references/startup-config.md   Startup, init.lua, XDG, shell options, prompt customization
 ```
 
 ## Conventions
@@ -361,7 +368,7 @@ Key env vars (see `internal/env/env.go`):
 
 ## Shell Skill Maintenance
 
-Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). The `export` format is covered in `references/export.md` (it is not a shell — it is the raw JSON output of an `InvokedAction` for bridging/embedding/caching). Bash, cmd-clink, elvish, ion, xonsh, fish, powershell, tcsh, and oil have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/ion/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`) for in-depth shell knowledge beyond carapace integration.
+Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). The `export` format is covered in `references/export.md` (it is not a shell — it is the raw JSON output of an `InvokedAction` for bridging/embedding/caching). Bash, cmd-clink, elvish, ion, xonsh, fish, powershell, tcsh, oil, and hilbish have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/ion/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`, `skills/hilbish/`) for in-depth shell knowledge beyond carapace integration.
 
 ### Structure
 
