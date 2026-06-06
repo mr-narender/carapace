@@ -185,6 +185,13 @@ cobra command invoked with _carapace subcommand
     references/language.md         Language fundamentals, quoting, variables, builtins
     references/execution.md        Execution model, job control, threading
     references/startup-config.md   Startup, configuration, XDG paths
+  ion/                       Ion shell in-depth reference
+    SKILL.md                      Entry point with routing table
+    references/completion.md       Ion completion system, IonCompleter, carapace integration
+    references/line-editing.md     Liner library, Editor, keymaps, autosuggestions
+    references/language.md         Language fundamentals, sigils, methods, quoting, redirection
+    references/execution.md        Execution model, job control, signals
+    references/startup-config.md   Startup, initrc, keybindings, prompt, history, plugins
   powershell/                PowerShell shell in-depth reference
     SKILL.md                      Entry point with routing table
     references/completion.md       PowerShell tab completion system
@@ -354,7 +361,7 @@ Key env vars (see `internal/env/env.go`):
 
 ## Shell Skill Maintenance
 
-Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). The `export` format is covered in `references/export.md` (it is not a shell — it is the raw JSON output of an `InvokedAction` for bridging/embedding/caching). Ion is covered only in `references/shell.md`. Bash, cmd-clink, elvish, xonsh, fish, powershell, tcsh, and oil have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`) for in-depth shell knowledge beyond carapace integration.
+Shell integration documentation lives in the `carapace-dev` composite skill (`skills/carapace-dev/`). The generic overview is `references/shell.md` and per-shell deep dives are `references/shell-{name}.md` (bash, bash-ble, oil, zsh, fish, elvish, nushell, xonsh, powershell). The `export` format is covered in `references/export.md` (it is not a shell — it is the raw JSON output of an `InvokedAction` for bridging/embedding/caching). Bash, cmd-clink, elvish, ion, xonsh, fish, powershell, tcsh, and oil have their own composite skills (`skills/bash/`, `skills/cmd-clink/`, `skills/elvish/`, `skills/ion/`, `skills/xonsh/`, `skills/fish/`, `skills/powershell/`, `skills/tcsh/`, `skills/oil/`) for in-depth shell knowledge beyond carapace integration.
 
 ### Structure
 

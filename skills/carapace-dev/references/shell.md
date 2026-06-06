@@ -12,7 +12,7 @@ Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specif
 | Cmd (Clink) | `cmd-clink` | `internal/shell/cmd_clink/` | **cmd-clink** skill |
 | Elvish | `elvish` | `internal/shell/elvish/` | `references/shell-elvish.md` |
 | Fish | `fish` | `internal/shell/fish/` | `references/shell-fish.md` |
-| Ion | `ion` | `internal/shell/ion/` | — |
+| Ion | `ion` | `internal/shell/ion/` | **ion** skill |
 | Nushell | `nushell` | `internal/shell/nushell/` | `references/shell-nushell.md` |
 | PowerShell | `powershell` | `internal/shell/powershell/` | `references/shell-powershell.md` |
 | Tcsh | `tcsh` | `internal/shell/tcsh/` | **tcsh** skill |
