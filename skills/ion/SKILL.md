@@ -20,8 +20,8 @@ Comprehensive reference for ion shell internals, with emphasis on the completion
 
 Load the reference that matches your task. When in doubt, load multiple references.
 
-|| Keywords | Reference |
-||----------|----------|
+| Keywords | Reference |
+|----------|----------|
 | IonCompleter, IonFileCompleter, MultiCompleter, Completer trait, CompletionType, CursorPosition, BeforeComplete event, filename_completion, escape/unescape, command completion, variable completion, file completion, PATH scanning, tab completion, completion cycling, completion display, nospace, carapace ion integration, JSON suggestion format | [references/completion.md](references/completion.md) |
 | Liner, redox_liner, Editor, Context, KeyMap, KeyBindings, emacs mode, vi mode, key bindings, Tab, Ctrl+F, autosuggestion, history, Buffer, word divider, get_buffer_words, print_completion_list, complete() method, read_line() | [references/line-editing.md](references/line-editing.md) |
 | ion syntax, variables, arrays, let, sigils, $, @, type system, string methods, array methods, slicing, brace expansion, command substitution, process substitution, quoting, single quotes, double quotes, escape sequences, functions, fn, control flow, if, for, while, matches, test, redirection, ^>, ^|, &>, &|, pipelines, glob | [references/language.md](references/language.md) |
