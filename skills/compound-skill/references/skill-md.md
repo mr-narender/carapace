@@ -60,10 +60,10 @@ The core of the routing table. A Markdown table mapping **keywords** to **refere
 
 Load the reference that matches your task. When in doubt, load multiple references.
 
-|| Keywords | Reference ||
-||----------|----------|
-|| keyword1, keyword2, TypeA, methodB, concept name | [references/topic-a.md](references/topic-a.md) |
-|| keyword3, keyword4, CONFIG_VAR, edge case description | [references/topic-b.md](references/topic-b.md) |
+| Keywords | Reference ||
+|----------|----------|
+| keyword1, keyword2, TypeA, methodB, concept name | [references/topic-a.md](references/topic-a.md) |
+| keyword3, keyword4, CONFIG_VAR, edge case description | [references/topic-b.md](references/topic-b.md) |
 ```
 
 ### Keywords Column
