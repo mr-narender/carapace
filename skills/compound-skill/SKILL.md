@@ -18,13 +18,13 @@ Guide for creating a compound skill — a structured knowledge base that provide
 
 Load the reference that matches your task. When in doubt, load multiple references.
 
-|| Keywords | Reference |
-||----------|----------|
-|| research, source code analysis, documentation review, topic decomposition, sub-topic identification, scope boundaries, audience analysis, information sources | [references/research.md](references/research.md) |
-|| SKILL.md, frontmatter, name, description, triggers, user-invocable, routing table, Sub-Resources table, Quick Guide, Cross-Project References, data flow diagram | [references/skill-md.md](references/skill-md.md) |
-|| reference document, structure, heading, code example, table, cross-reference, source attribution, depth level, naming convention | [references/reference-doc.md](references/reference-doc.md) |
-|| cross-reference, link, overlap avoidance, delegation, Cross-Project References, stay on topic, DRY, complementary scope | [references/cross-referencing.md](references/cross-referencing.md) |
-|| maintenance, update triggers, adding references, removing references, keeping current, version skew, changelog | [references/maintenance.md](references/maintenance.md) |
+| Keywords | Reference |
+|----------|----------|
+| research, source code analysis, documentation review, topic decomposition, sub-topic identification, scope boundaries, audience analysis, information sources | [references/research.md](references/research.md) |
+| SKILL.md, frontmatter, name, description, triggers, user-invocable, routing table, Sub-Resources table, Quick Guide, Cross-Project References, data flow diagram | [references/skill-md.md](references/skill-md.md) |
+| reference document, structure, heading, code example, table, cross-reference, source attribution, depth level, naming convention | [references/reference-doc.md](references/reference-doc.md) |
+| cross-reference, link, overlap avoidance, delegation, Cross-Project References, stay on topic, DRY, complementary scope | [references/cross-referencing.md](references/cross-referencing.md) |
+| maintenance, update triggers, adding references, removing references, keeping current, version skew, changelog | [references/maintenance.md](references/maintenance.md) |
 
 ## Quick Guide
 
