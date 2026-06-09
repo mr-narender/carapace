@@ -40,7 +40,11 @@ Load the reference that matches your task. When in doubt, load multiple referenc
 
 ## Cross-Project References
 
-- For the carapace library's own compound skill structure, see the **carapace-dev** skill (in this repo).
-- For shell-specific compound skills (bash, zsh, fish, etc.), see the corresponding shell skills in this repo's `skills/` directory.
-- For the tabdance compound skill, see the **tabdance** skill (in the tabdance-bin repo).
-- For the jj compound skill, see the **jj** skill (in the carapace-jjlex repo).
+These existing compound skills serve as real-world examples:
+
+- **carapace-dev** — library development skill with 20+ references (carapace repo, `skills/carapace-dev/`)
+- **bash** — shell internals skill with 5 references (carapace repo, `skills/bash/`)
+- **tabdance** — application skill with data flow diagram (tabdance-bin repo, `skills/tabdance/`)
+- **jj** — VCS reference skill with 12 references (carapace-jjlex repo, `skills/jj/`)
+- **helix** — focused theme-system skill with 5 references (tabdance-theme repo, `skills/helix/`)
+- **bubbletea** — framework skill with 8 references (tabdance-bin repo, `skills/bubbletea/`)

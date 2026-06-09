@@ -72,11 +72,11 @@ List the terms, type names, function names, and concepts that the reference docu
 
 Guidelines:
 
-- **Include type names**: `Action`, `InvokedAction`, `Context`, `Batch`
-- **Include function/method names**: `complete()`, `traverse()`, `Invoke()`
-- **Include concept names**: `completion engine`, `argument classification`, `shell patching`
-- **Include config variables**: `CARAPACE_LOG`, `CARAPACE_SANDBOX`
-- **Include domain jargon**: `compspec`, `revset`, `fileset`
+- **Include type names**: `Action`, `Model`, `Server`, `Config`
+- **Include function/method names**: `Handle()`, `Process()`, `Invoke()`
+- **Include concept names**: `dispatch engine`, `middleware chain`, `event loop`
+- **Include config variables**: `DEBUG`, `LOG_LEVEL`, `CONFIG_PATH`
+- **Include domain jargon**: `revset`, `fileset`, `compspec`, `middleware`
 - **Comma-separated**: list all relevant keywords for that document
 - **Be comprehensive**: better to over-list than under-list — the agent uses these to route
 
@@ -113,13 +113,12 @@ For skills covering a system with a clear pipeline or dispatch flow, include a d
 ## Data Flow
 
 \`\`\`
-Shell completion trigger
-  → command invoked with args
-    → phase 1: patching
-    → phase 2: traversal
-    → phase 3: action resolution
-    → phase 4: formatting
-    → output to shell
+Input event
+  → parser
+    → middleware chain
+      → handler dispatch
+        → response formatting
+          → output
 \`\`\`
 ```
 
@@ -144,13 +143,15 @@ Guidelines:
 - **Explain the boundary** — briefly state what the other skill covers that this one doesn't
 - **List all overlapping skills** — the agent needs to know when to switch
 
-## Complete Example
+## Real-World Examples
 
-See the existing compound skills for real-world examples:
+These existing compound skills demonstrate the patterns described here:
 
-- **carapace-dev** (`skills/carapace-dev/SKILL.md`) — library development skill with 20+ references
-- **bash** (`skills/bash/SKILL.md`) — shell internals skill with 5 references
-- **tabdance** (`tabdance-bin/skills/tabdance/SKILL.md`) — application skill with data flow diagram
-- **jj** (`carapace-jjlex/skills/jj/SKILL.md`) — VCS reference skill with 12 references
-- **helix** (`tabdance-theme/skills/helix/SKILL.md`) — focused theme-system skill with 5 references
-- **bubbletea** (`tabdance-bin/skills/bubbletea/SKILL.md`) — framework skill with 8 references
+| Skill | Type | References | Notable Feature |
+|-------|------|------------|----------------|
+| **carapace-dev** | Library development | 20+ | Large routing table, per-shell sub-references |
+| **bash** | Shell internals | 5 | Per-concern decomposition |
+| **tabdance** | Application | 14 | Data flow diagram, cross-project references |
+| **jj** | VCS reference | 12 | Concept-heavy, CLI reference |
+| **helix** | Theme system | 5 | Focused scope, conversion reference |
+| **bubbletea** | Framework | 8 | Model/Update/View decomposition, migration guide |

@@ -16,8 +16,8 @@ Use short, lowercase, hyphenated names that describe the topic as a noun:
 
 When a skill has multiple documents in a category, use a consistent prefix:
 
-- `shell.md`, `shell-bash.md`, `shell-zsh.md`, `shell-fish.md` — per-shell references
-- `completion.md`, `editor.md`, `startup-config.md` — per-concern references (shell skills)
+- `shell.md`, `shell-bash.md`, `shell-zsh.md`, `shell-fish.md` — per-variant references
+- `completion.md`, `editor.md`, `startup-config.md` — per-concern references
 
 ## Document Structure
 
@@ -55,8 +55,8 @@ Start with an H1 (`#`) that names the topic. Use a descriptive noun phrase:
 
 - `# Bash Programmable Completion`
 - `# The Action Type and Modifiers`
-- `# The select Command Pipeline`
-- `# jj Core Concepts`
+- `# The Request Pipeline`
+- `# Core Concepts`
 
 ### Opening Summary
 
@@ -111,7 +111,7 @@ Use ASCII art for flow diagrams and state machines:
 
 ```markdown
 ```
-Shell → complete() → traverse() → storage.get() → action.Invoke() → format()
+Input → parse() → validate() → handler.Dispatch() → format()
 ```
 ```
 
@@ -138,7 +138,7 @@ Don't:
 Link to other reference documents in the same skill when the topic overlaps:
 
 ```markdown
-For how the traverse engine classifies arguments, see [traverse.md](traverse.md).
+For how the dispatch engine routes requests, see [dispatch.md](dispatch.md).
 ```
 
 Use relative links within the skill: `[other.md](other.md)`, not absolute paths.
@@ -148,7 +148,7 @@ Use relative links within the skill: `[other.md](other.md)`, not absolute paths.
 When a topic is covered by another skill, link to that skill rather than re-documenting:
 
 ```markdown
-For bash's internal completion system (COMP_TYPE, COMP_WORDBREAKS, compspec), see the **bash** skill → `references/completion.md`.
+For the internal dispatch system (routing, middleware, error handling), see the **framework** skill → `references/dispatch.md`.
 ```
 
 This is the key mechanism for avoiding overlap. See [cross-referencing.md](cross-referencing.md) for detailed guidelines.
@@ -164,5 +164,3 @@ While not every document needs every section, follow this order when applicable:
 5. **Edge cases and known issues** — non-obvious behavior
 6. **References** — links to source files, official docs
 7. **Related skills** — links to other skills or references
-
-Shell-specific reference documents in the carapace ecosystem follow a more specific section order — see the Shell Skill Maintenance section in the project's `AGENTS.md` for that convention.

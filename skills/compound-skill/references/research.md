@@ -55,7 +55,7 @@ Define what the skill covers and — critically — what it does **not** cover:
 - **In scope**: internals, APIs, configuration, edge cases, cross-cutting concerns specific to the topic
 - **Out of scope**: topics covered by other skills (link to them instead), general programming knowledge, unrelated tooling
 
-When a topic is partially covered by another skill, document only the aspect unique to your project and link to the other skill for the rest. For example, a carapace shell integration document covers *how carapace formats output for bash*, but links to the **bash** skill for *how bash's completion system works internally*.
+When a topic is partially covered by another skill, document only the aspect unique to your project and link to the other skill for the rest. For example, a project that integrates with bash's completion system would document *how the project formats output for bash*, but link to a **bash** skill for *how bash's completion system works internally*.
 
 ## Audience Analysis
 

@@ -14,7 +14,7 @@ When information is already documented elsewhere, link to it instead of re-stati
 When one reference document mentions a concept covered in another reference in the same skill, link to it:
 
 ```markdown
-The traverse engine classifies arguments using pflagfork (see [pflag.md](pflag.md) for flag mode details).
+The dispatch engine routes requests using middleware (see [middleware.md](middleware.md) for chain details).
 ```
 
 Guidelines:
@@ -29,7 +29,7 @@ Guidelines:
 When a topic is covered by another skill entirely, delegate to that skill:
 
 ```markdown
-For bash's programmable completion system (COMP_TYPE, COMP_WORDBREAKS, compspec search order, bash-completion helpers), see the **bash** skill → `references/completion.md`.
+For the framework's internal dispatch system (routing, middleware, error handling), see the **framework** skill → `references/dispatch.md`.
 ```
 
 ### When to Delegate
@@ -58,10 +58,10 @@ The most common case is partial overlap: your project uses another project's fea
 2. **Link to the other skill** for the general part
 3. **State the boundary explicitly**
 
-Example from the carapace ecosystem:
+Example of the partial overlap pattern:
 
-- The **carapace-dev** skill's `references/shell-bash.md` documents *how carapace formats completions for bash* (project-specific)
-- The **bash** skill's `references/completion.md` documents *how bash's completion system works internally* (general)
+- A project's skill documents *how the project integrates with a framework* (project-specific)
+- The framework's skill documents *how the framework works internally* (general)
 - Each links to the other at the boundary
 
 ## Cross-Project References Section
@@ -106,6 +106,6 @@ After writing a skill, check for overlap:
 | Scenario | Solution |
 |----------|----------|
 | Your project uses library X | Document *how you use X*, link to X's skill for *how X works* |
-| Your project has a shell integration | Document *your snippet and output format*, link to the shell skill for *the shell's completion internals* |
+| Your project integrates with a tool | Document *your integration code*, link to the tool's skill for *the tool's internals* |
 | Your project extends a framework | Document *your extensions*, link to the framework's skill for *the base framework* |
 | Your project converts between formats | Document *your conversion logic*, link to each format's skill for *the format specification* |
