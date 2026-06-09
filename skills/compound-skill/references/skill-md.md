@@ -151,7 +151,4 @@ These existing compound skills demonstrate the patterns described here:
 |-------|------|------------|----------------|
 | **carapace-dev** | Library development | 20+ | Large routing table, per-shell sub-references |
 | **bash** | Shell internals | 5 | Per-concern decomposition |
-| **tabdance** | Application | 14 | Data flow diagram, cross-project references |
 | **jj** | VCS reference | 12 | Concept-heavy, CLI reference |
-| **helix** | Theme system | 5 | Focused scope, conversion reference |
-| **bubbletea** | Framework | 8 | Model/Update/View decomposition, migration guide |

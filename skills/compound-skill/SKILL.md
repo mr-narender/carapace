@@ -44,7 +44,4 @@ These existing compound skills serve as real-world examples:
 
 - **carapace-dev** — library development skill with 20+ references (carapace repo, `skills/carapace-dev/`)
 - **bash** — shell internals skill with 5 references (carapace repo, `skills/bash/`)
-- **tabdance** — application skill with data flow diagram (tabdance-bin repo, `skills/tabdance/`)
 - **jj** — VCS reference skill with 12 references (carapace-jjlex repo, `skills/jj/`)
-- **helix** — focused theme-system skill with 5 references (tabdance-theme repo, `skills/helix/`)
-- **bubbletea** — framework skill with 8 references (tabdance-bin repo, `skills/bubbletea/`)
