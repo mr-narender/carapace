@@ -35,6 +35,8 @@ A multi-line string that serves two purposes:
 
 The `Triggers on:` line lists the exact strings and terms that should cause the agent to load this skill. Be comprehensive — include technical terms, API names, config variables, and common abbreviations.
 
+**Important:** The entire `description` field (including the scope summary and trigger list) must not exceed **1024 characters**. If the trigger list grows too long, prioritize the most distinctive and commonly used terms — remove less specific ones like generic phrases ("best practice", "design pattern") or rarely used API names.
+
 ### `user-invocable`
 
 Set to `true`. This allows the skill to be loaded on demand.
