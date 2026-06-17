@@ -26,6 +26,7 @@ const (
 	CARAPACE_TOOLTIP            = "CARAPACE_TOOLTIP"            // enable tooltip style
 	CARAPACE_UNFILTERED         = "CARAPACE_UNFILTERED"         // skip the final filtering step
 	CARAPACE_ZSH_HASH_DIRS      = "CARAPACE_ZSH_HASH_DIRS"      // zsh hash directories
+	CARAPACE_ZSH_STYLE_LIMIT    = "CARAPACE_ZSH_STYLE_LIMIT"    // max values to style in zsh
 	CLICOLOR                    = "CLICOLOR"                    // disable color
 	NO_COLOR                    = "NO_COLOR"                    // disable color
 )
@@ -47,6 +48,15 @@ func Lenient() bool {
 
 func Hashdirs() string {
 	return os.Getenv(CARAPACE_ZSH_HASH_DIRS)
+}
+
+func ZshStyleLimit() int {
+	v := os.Getenv(CARAPACE_ZSH_STYLE_LIMIT)
+	limit, err := strconv.Atoi(v)
+	if err != nil {
+		return 300
+	}
+	return limit
 }
 
 func Sandbox() (m *mock.Mock, err error) {
