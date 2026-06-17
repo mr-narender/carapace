@@ -230,10 +230,13 @@ func (a Action) NoSpace(suffixes ...rune) Action {
 	})
 }
 
-// NoPrefix prevents common prefix insertion where supported.
-func (a Action) NoPrefix() Action {
+// NoPrefix prevents common prefix insertion for given prefixes (or all if none are given).
+func (a Action) NoPrefix(prefixes ...rune) Action {
 	return ActionCallback(func(c Context) Action {
-		a.meta.NoPrefix = true
+		if len(prefixes) == 0 {
+			a.meta.NoPrefix.Add('*')
+		}
+		a.meta.NoPrefix.Add(prefixes...)
 		return a
 	})
 }

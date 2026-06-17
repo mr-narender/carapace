@@ -158,6 +158,18 @@ func TestMultiParts(t *testing.T) {
 	})
 }
 
+func TestNoPrefix(t *testing.T) {
+	sandbox.Package(t, "github.com/carapace-sh/carapace/example")(func(s *sandbox.Sandbox) {
+		s.Run("modifier", "--noprefix", "").
+			Expect(carapace.ActionValues(
+				"--",
+				"---",
+				"----",
+			).NoPrefix('-').
+				Usage("NoPrefix()"))
+	})
+}
+
 func TestPrefix(t *testing.T) {
 	os.Unsetenv("LS_COLORS")
 	sandbox.Package(t, "github.com/carapace-sh/carapace/example")(func(s *sandbox.Sandbox) {

@@ -87,16 +87,28 @@ func TestNoSpace(t *testing.T) {
 func TestNoPrefix(t *testing.T) {
 	a := ActionCallback(func(c Context) Action {
 		return ActionValues().Invoke(c).Merge(
-			ActionCallback(func(c Context) Action {
-				return ActionValues("one", "two").NoPrefix()
-			}).Invoke(c)).
+			ActionValues("one", "two").NoPrefix('-').Invoke(c)).
 			ToA()
 	})
-	if a.meta.NoPrefix {
-		t.Fatal("uninvoked action should not disable prefix insertion")
+	if a.meta.NoPrefix.Matches("-x") {
+		t.Fatal("uninvoked noprefix should not match")
 	}
-	if !a.Invoke(Context{}).action.meta.NoPrefix {
-		t.Fatal("invoked action should disable prefix insertion")
+	if !a.Invoke(Context{}).action.meta.NoPrefix.Matches("-x") {
+		t.Fatal("invoked noprefix should match")
+	}
+}
+
+func TestNoPrefixAll(t *testing.T) {
+	a := ActionValues("--", "---", "----").NoPrefix()
+	if !a.Invoke(Context{}).action.meta.NoPrefix.Matches("x") {
+		t.Fatal("NoPrefix() without args should match all prefixes")
+	}
+}
+
+func TestPrefixAutoNoPrefix(t *testing.T) {
+	a := ActionValues("a", "b").Prefix("file://").NoPrefix('f')
+	if !a.Invoke(Context{}).action.meta.NoPrefix.Matches("file://test") {
+		t.Fatal("NoPrefix('f') should match file:// prefix")
 	}
 }
 

@@ -36,6 +36,7 @@ func init() {
 	modifierCmd.Flags().String("multiparts", "", "MultiParts()")
 	modifierCmd.Flags().String("multipartsp", "", "MultiPartsP()")
 	modifierCmd.Flags().String("nospace", "", "NoSpace()")
+	modifierCmd.Flags().String("noprefix", "", "NoPrefix()")
 	modifierCmd.Flags().String("prefix", "", "Prefix()")
 	modifierCmd.Flags().String("retain", "", "Retain()")
 	modifierCmd.Flags().String("shift", "", "Shift()")
@@ -129,6 +130,11 @@ func init() {
 			"two/",
 			"three",
 		).NoSpace(',', '/'),
+		"noprefix": carapace.ActionValues(
+			"--",
+			"---",
+			"----",
+		).NoPrefix('-'),
 		"timeout": carapace.ActionCallback(func(c carapace.Context) carapace.Action {
 			time.Sleep(3 * time.Second)
 			return carapace.ActionValues("within timeout")
