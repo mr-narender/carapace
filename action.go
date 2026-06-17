@@ -230,6 +230,17 @@ func (a Action) NoSpace(suffixes ...rune) Action {
 	})
 }
 
+// NoPrefix prevents common prefix insertion for given prefixes (or all if none are given).
+func (a Action) NoPrefix(prefixes ...rune) Action {
+	return ActionCallback(func(c Context) Action {
+		if len(prefixes) == 0 {
+			a.meta.NoPrefix.Add('*')
+		}
+		a.meta.NoPrefix.Add(prefixes...)
+		return a
+	})
+}
+
 // Prefix adds a prefix to values (only the ones inserted, not the display values).
 //
 //	carapace.ActionValues("melon", "drop", "fall").Prefix("water")
