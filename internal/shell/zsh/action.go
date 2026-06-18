@@ -150,7 +150,7 @@ func ActionRawValues(currentWord string, meta common.Meta, values common.RawValu
 			description := sanitizer.Replace(val.Description)
 
 			vals[index] = value
-			noprefix = noprefix || meta.NoPrefix.Matches(value)
+			noprefix = noprefix || meta.NoPrefix.Matches(strings.TrimPrefix(value, currentWord)) // TODO likely not correct at all times (e.g. when value gets quoted)
 
 			if strings.TrimSpace(description) == "" {
 				displays[index] = display
