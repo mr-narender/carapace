@@ -28,19 +28,20 @@ jobs:
           retention-days: 1
 
 
-  word:               {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: word}}
-  nospace:            {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: nospace}}
   doubleQuote:        {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: doubleQuote}}
   doubleQuoteOpen:    {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: doubleQuoteOpen}}
   doubleQuotePartial: {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: doubleQuotePartial}}
+  escape:             {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: escape}}
+  noPrefix:           {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: noPrefix}}
+  nospace:            {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: nospace}}
+  redirect:           {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: redirect}}
   singleQuote:        {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: singleQuote}}
   singleQuoteOpen:    {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: singleQuoteOpen}}
   singleQuotePartial: {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: singleQuotePartial}}
-  escape:             {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: escape}}
-  redirect:           {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: redirect}}
-  special:            {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: special}}
   specialDoubleQuote: {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: specialDoubleQuote}}
+  special:            {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: special}}
   specialSingleQuote: {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: specialSingleQuote}}
+  word:               {needs: build, uses: ./.github/workflows/vhs-template.yml, with: {topic: word}}
 
   doc:
     needs:

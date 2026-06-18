@@ -6,7 +6,7 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-> example >/dev/null
+> example modifier --noprefix one
 
 
 
@@ -14,7 +14,7 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-> example >/dev/null
+> example modifier --noprefix one
 
 
 
@@ -22,15 +22,7 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-> example action
-         action       compat       group        modifier     special
-         alias        completion   help         multiparts   subcommand
-         chain        flag         interspersed plugin
-         action example
-
-
-────────────────────────────────────────────────────────────────────────────────
-> example action
+> example modifier --noprefix one--
 
 
 
@@ -38,8 +30,16 @@
 
 
 ────────────────────────────────────────────────────────────────────────────────
-> example action
+> example modifier --noprefix one--
+>
 
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+> example modifier --noprefix one--
+>
 
 
 
