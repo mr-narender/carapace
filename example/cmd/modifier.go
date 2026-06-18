@@ -133,7 +133,8 @@ func init() {
 		"noprefix": carapace.ActionValues(
 			"--",
 			"---",
-			"----",
+			"one--",
+			"one---",
 		).NoPrefix('-'),
 		"timeout": carapace.ActionCallback(func(c carapace.Context) carapace.Action {
 			time.Sleep(3 * time.Second)

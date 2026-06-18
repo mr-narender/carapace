@@ -164,7 +164,8 @@ func TestNoPrefix(t *testing.T) {
 			Expect(carapace.ActionValues(
 				"--",
 				"---",
-				"----",
+				"one--",
+				"one---",
 			).NoPrefix('-').
 				Usage("NoPrefix()"))
 	})
