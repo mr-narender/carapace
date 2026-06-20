@@ -31,6 +31,7 @@ function _%[1]v_completion {
   zstyle ":completion:${curcontext}:*" list-colors "${zstyle}"
   zstyle ":completion:${curcontext}:*" group-name ''
   [ -z "$message" ] || _message -r "${message}"
+  [[ "${noprefix}" = "true" ]] && compstate[insert]=menu
   
   local block tag displays values displaysArr valuesArr
   while IFS=$'\002' read -r -d $'\002' block; do
@@ -41,8 +42,6 @@ function _%[1]v_completion {
   
     [[ ${#valuesArr[@]} -gt 1 ]] && _describe -t "${tag}" "${tag}" displaysArr valuesArr -Q -S ''
   done <<<"${data}"
-
-  [[ "${noprefix}" = "true" ]] && compstate[insert]=menu
 }
 compquote '' 2>/dev/null && _%[1]v_completion
 compdef _%[1]v_completion %[1]v`, cmd.Name(), uid.Executable())

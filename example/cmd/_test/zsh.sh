@@ -19,6 +19,7 @@ function _example_completion {
   zstyle ":completion:${curcontext}:*" list-colors "${zstyle}"
   zstyle ":completion:${curcontext}:*" group-name ''
   [ -z "$message" ] || _message -r "${message}"
+  [[ "${noprefix}" = "true" ]] && compstate[insert]=menu
   
   local block tag displays values displaysArr valuesArr
   while IFS=$'\002' read -r -d $'\002' block; do
@@ -29,8 +30,6 @@ function _example_completion {
   
     [[ ${#valuesArr[@]} -gt 1 ]] && _describe -t "${tag}" "${tag}" displaysArr valuesArr -Q -S ''
   done <<<"${data}"
-
-  [[ "${noprefix}" = "true" ]] && compstate[insert]=menu
 }
 compquote '' 2>/dev/null && _example_completion
 compdef _example_completion example
