@@ -104,6 +104,7 @@
       - [Expect](./carapace/expect.md)
       - [ExpectNot](./carapace/expectNot.md)
       - [Output](./carapace/output.md)
+  - [Multi Completer](./carapace/multiCompleter.md)
 - [development](./development.md)
   - [Testing](./development/testing.md)
   - [Asciinema](./development/asciinema.md)
