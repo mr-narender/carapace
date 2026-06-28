@@ -241,16 +241,20 @@ func (c Carapace) rewriteArgs(e *entry) {
 		//   binary _carapace export "" identify -verbose image.png
 		// Rewrite to:
 		//   binary identify _carapace export "" -verbose image.png
-		subcommand := e.defaultName
-		if len(os.Args) > 4 && isCompleterSubcommand(os.Args[4]) {
-			subcommand = os.Args[4]
+		//
+		// bridge.ActionCarapace("binary") calls:
+		//   binary _carapace export "" ""
+		// Rewrite to:
+		//   binary binary _carapace export "" ""
+		// (pseudo-subcommand form for self-completion)
+		if len(os.Args) > 4 && isCompleterSubcommand(os.Args[4]) && os.Args[4] != exe {
 			os.Args = append(
-				[]string{os.Args[0], subcommand, "_carapace", os.Args[2], os.Args[3]},
+				[]string{os.Args[0], os.Args[4], "_carapace", os.Args[2], os.Args[3]},
 				os.Args[5:]...,
 			)
 		} else {
 			os.Args = append(
-				[]string{os.Args[0], subcommand, "_carapace"},
+				[]string{os.Args[0], exe, "_carapace"},
 				os.Args[2:]...,
 			)
 		}
