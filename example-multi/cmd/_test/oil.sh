@@ -1,0 +1,14 @@
+#!/bin/osh
+_carapace_identify_completer() {
+  local command="${COMP_WORDS[0]}"
+  local compline="${COMP_LINE:0:${COMP_POINT}}"
+  local IFS=$'\n'
+  mapfile -t COMPREPLY < <(echo "$compline" | sed -e "s/ \$/ ''/" -e 's/"/\"/g' | xargs example-multi "${command}" _carapace oil)
+  [[ "${COMPREPLY[@]}" == "" ]] && COMPREPLY=() # fix for mapfile creating a non-empty array from empty command output
+  [[ ${COMPREPLY[0]} == *[/=@:.,$'\001'] ]] && compopt -o nospace
+  # shellcheck disable=SC2206
+  [[ ${#COMPREPLY[@]} -eq 1 ]] && COMPREPLY=(${COMPREPLY[@]%$'\001'})
+}
+
+complete -F _carapace_identify_completer "example-multi" "identify" "convert"
+

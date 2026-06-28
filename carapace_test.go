@@ -275,3 +275,95 @@ func TestCompletePositionalWithSpace(t *testing.T) {
 		t.Error(s)
 	}
 }
+
+func TestGenWithOptions(t *testing.T) {
+	sub1 := &cobra.Command{Use: "sub1"}
+	sub2 := &cobra.Command{Use: "sub2"}
+	root := &cobra.Command{Use: "root"}
+
+	Gen(root, WithSubcommands(sub1, sub2))
+
+	if s, err := Gen(root).Snippet("bash"); err != nil {
+		t.Error(err)
+	} else if !strings.Contains(s, "#!/bin/bash") {
+		t.Error("bash multi snippet missing shebang")
+	}
+}
+
+func TestGenWithSubcommandsSnippet(t *testing.T) {
+	sub1 := &cobra.Command{Use: "sub1"}
+	sub2 := &cobra.Command{Use: "sub2"}
+	root := &cobra.Command{Use: "root"}
+
+	Gen(root, WithSubcommands(sub1, sub2))
+
+	shells := []string{"bash", "zsh", "fish", "elvish", "nushell", "powershell", "xonsh", "oil", "tcsh", "bash-ble"}
+	for _, sh := range shells {
+		s, err := Gen(root).Snippet(sh)
+		if err != nil {
+			t.Errorf("%v: %v", sh, err)
+		}
+		if s == "" {
+			t.Errorf("%v: empty snippet", sh)
+		}
+	}
+
+	_, err := Gen(root).Snippet("cmd-clink")
+	if err == nil {
+		t.Error("expected error for cmd-clink")
+	}
+}
+
+func TestGenWithSnippetFuncs(t *testing.T) {
+	cmd := &cobra.Command{Use: "test"}
+	Gen(cmd, WithSnippetFuncs(map[string]string{
+		"bash": "declare -x CARAPACE_TEST=1",
+	}))
+
+	s, err := Gen(cmd).Snippet("bash")
+	if err != nil {
+		t.Error(err)
+	}
+	if !strings.Contains(s, "declare -x CARAPACE_TEST=1") {
+		t.Error("bash snippet missing enrichment code")
+	}
+	if !strings.Contains(s, "#!/bin/bash") {
+		t.Error("bash snippet missing shebang")
+	}
+
+	// zsh snippet should not contain bash enrichment
+	s, err = Gen(cmd).Snippet("zsh")
+	if err != nil {
+		t.Error(err)
+	}
+	if strings.Contains(s, "CARAPACE_TEST=1") {
+		t.Error("zsh snippet should not contain bash enrichment")
+	}
+}
+
+func TestGenWithDefault(t *testing.T) {
+	sub1 := &cobra.Command{Use: "sub1"}
+	sub2 := &cobra.Command{Use: "sub2"}
+	root := &cobra.Command{Use: "root"}
+
+	Gen(root, WithSubcommands(sub1, sub2), WithDefault("sub2"))
+
+	entry := storage.get(root)
+	if entry.defaultName != "sub2" {
+		t.Errorf("expected defaultName 'sub2', got '%v'", entry.defaultName)
+	}
+}
+
+func TestGenWithDefaultNoop(t *testing.T) {
+	cmd := &cobra.Command{Use: "test"}
+	Gen(cmd, WithDefault("sub1"))
+	// WithDefault is no-op at runtime without WithSubcommands:
+	// Execute() does nothing special, Snippet() produces standard snippet
+	s, err := Gen(cmd).Snippet("bash")
+	if err != nil {
+		t.Error(err)
+	}
+	if !strings.Contains(s, "#!/bin/bash") {
+		t.Error("should still produce standard bash snippet")
+	}
+}

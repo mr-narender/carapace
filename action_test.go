@@ -117,6 +117,7 @@ func TestActionDirectories(t *testing.T) {
 		ActionStyledValues(
 			"example/", style.Of(style.Blue, style.Bold),
 			"example-nonposix/", style.Of(style.Blue, style.Bold),
+			"example-multi/", style.Of(style.Blue, style.Bold),
 			"docs/", style.Of(style.Blue, style.Bold),
 			"internal/", style.Of(style.Blue, style.Bold),
 			"pkg/", style.Of(style.Blue, style.Bold),
@@ -125,6 +126,7 @@ func TestActionDirectories(t *testing.T) {
 		).NoSpace('/').Tag("directories").Invoke(Context{}).UidF(uid.Map(
 			"example/", "file://"+wd("")+"/example/",
 			"example-nonposix/", "file://"+wd("")+"/example-nonposix/",
+			"example-multi/", "file://"+wd("")+"/example-multi/",
 			"docs/", "file://"+wd("")+"/docs/",
 			"internal/", "file://"+wd("")+"/internal/",
 			"pkg/", "file://"+wd("")+"/pkg/",
@@ -140,6 +142,7 @@ func TestActionDirectories(t *testing.T) {
 		ActionStyledValues(
 			"example/", style.Of(style.Blue, style.Bold),
 			"example-nonposix/", style.Of(style.Blue, style.Bold),
+			"example-multi/", style.Of(style.Blue, style.Bold),
 			"docs/", style.Of(style.Blue, style.Bold),
 			"internal/", style.Of(style.Blue, style.Bold),
 			"pkg/", style.Of(style.Blue, style.Bold),
@@ -148,6 +151,7 @@ func TestActionDirectories(t *testing.T) {
 		).NoSpace('/').Tag("directories").Invoke(Context{}).Prefix("./").UidF(uid.Map(
 			"./example/", "file://"+wd("")+"/example/",
 			"./example-nonposix/", "file://"+wd("")+"/example-nonposix/",
+			"./example-multi/", "file://"+wd("")+"/example-multi/",
 			"./docs/", "file://"+wd("")+"/docs/",
 			"./internal/", "file://"+wd("")+"/internal/",
 			"./pkg/", "file://"+wd("")+"/pkg/",
@@ -192,6 +196,7 @@ func TestActionFiles(t *testing.T) {
 			"README.md", style.Default,
 			"example/", style.Of(style.Blue, style.Bold),
 			"example-nonposix/", style.Of(style.Blue, style.Bold),
+			"example-multi/", style.Of(style.Blue, style.Bold),
 			"docs/", style.Of(style.Blue, style.Bold),
 			"internal/", style.Of(style.Blue, style.Bold),
 			"pkg/", style.Of(style.Blue, style.Bold),
@@ -202,6 +207,7 @@ func TestActionFiles(t *testing.T) {
 			"README.md", "file://"+wd("")+"/README.md",
 			"example/", "file://"+wd("")+"/example/",
 			"example-nonposix/", "file://"+wd("")+"/example-nonposix/",
+			"example-multi/", "file://"+wd("")+"/example-multi/",
 			"docs/", "file://"+wd("")+"/docs/",
 			"internal/", "file://"+wd("")+"/internal/",
 			"pkg/", "file://"+wd("")+"/pkg/",

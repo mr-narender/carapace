@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 
@@ -87,6 +88,20 @@ func flagRecursive(cmd *cobra.Command, flag *pflagfork.Flag) *url.URL {
 	return uid
 }
 
+// callerModuleContains checks if any caller's source path contains the given substring.
+func callerModuleContains(substr string) bool {
+	pcs := make([]uintptr, 32)
+	n := runtime.Callers(0, pcs)
+	for _, pc := range pcs[:n] {
+		if fn := runtime.FuncForPC(pc); fn != nil {
+			if strings.Contains(fn.Name(), substr) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // Executable returns the name of the executable.
 func Executable() string {
 	executable, err := os.Executable()
@@ -95,7 +110,10 @@ func Executable() string {
 	}
 	switch base := filepath.Base(executable); base {
 	case "cmd.test":
-		return "example" // for `go test -v ./...`
+		if callerModuleContains("example-multi") {
+			return "example-multi" // for `go test -v ./...` in example-multi
+		}
+		return "example" // for `go test -v ./...` in example
 	case "ld-musl-x86_64.so.1":
 		return filepath.Base(os.Args[0]) // alpine container workaround (gcompat)
 	default:
