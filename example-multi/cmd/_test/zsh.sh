@@ -1,4 +1,4 @@
-#compdef "example-multi" "identify" "convert"
+#compdef example-multi identify convert
 function _example-multi_completer {
   local command="$(basename $words[1])"
   local compline=${words[@]:0:$CURRENT}
@@ -33,5 +33,5 @@ function _example-multi_completer {
   done <<<"${data}"
 }
 compquote '' 2>/dev/null && _example-multi_completer
-compdef _example-multi_completer "example-multi" "identify" "convert"
+compdef _example-multi_completer example-multi identify convert
 
