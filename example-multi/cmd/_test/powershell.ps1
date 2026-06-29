@@ -1,7 +1,7 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
-$_carapace_identify_completer = {
+$_example-multi_completer = {
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", "", Scope="Function", Target="*")]
     param($wordToComplete, $commandAst, $cursorPosition)
     $commandElements = $commandAst.CommandElements
@@ -43,7 +43,7 @@ $_carapace_identify_completer = {
     $completions
 }
 
-Register-ArgumentCompleter -Native -ScriptBlock $_carapace_identify_completer -CommandName 'example-multi' # 'example-multi.exe'
-Register-ArgumentCompleter -Native -ScriptBlock $_carapace_identify_completer -CommandName 'identify' # 'identify.exe'
-Register-ArgumentCompleter -Native -ScriptBlock $_carapace_identify_completer -CommandName 'convert' # 'convert.exe'
+Register-ArgumentCompleter -Native -ScriptBlock $_example-multi_completer -CommandName 'example-multi' # 'example-multi.exe'
+Register-ArgumentCompleter -Native -ScriptBlock $_example-multi_completer -CommandName 'identify' # 'identify.exe'
+Register-ArgumentCompleter -Native -ScriptBlock $_example-multi_completer -CommandName 'convert' # 'convert.exe'
 

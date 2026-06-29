@@ -23,7 +23,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 from xonsh.completers.tools import contextual_command_completer
 
 @contextual_command_completer
-def _carapace_%[1]v_completer(context):
+def _%[1]v_completer(context):
     """carapace multi-completer"""
     if context.command not in [%[3]v]:
         return
@@ -47,7 +47,7 @@ def _carapace_%[1]v_completer(context):
         result = {RichCompletion(context.prefix, display=context.prefix, description='', prefix_len=len(context.raw_prefix), append_closing_quote=False)}
     return result
 
-add_one_completer('carapace_%[1]v', _carapace_%[1]v_completer, 'start')
+add_one_completer('%[1]v', _%[1]v_completer, 'start')
 `, defaultName, uid.Executable(), strings.Join(complete, ", "), "", snippetFuncs)
 }
 

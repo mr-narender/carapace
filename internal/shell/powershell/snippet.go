@@ -109,7 +109,7 @@ $_%[2]v_completion = {
 const snippetMulti = `using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 %[4]v
-$_carapace_%[1]v_completer = {
+$_%[1]v_completer = {
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", "", Scope="Function", Target="*")]
     param($wordToComplete, $commandAst, $cursorPosition)
     $commandElements = $commandAst.CommandElements
@@ -167,7 +167,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 		if runtime.GOOS == "windows" {
 			prefix = ""
 		}
-		complete[i] = fmt.Sprintf(`Register-ArgumentCompleter -Native -ScriptBlock $_carapace_%v_completer -CommandName '%v'%v'%v.exe'`, defaultName, name, prefix, name)
+		complete[i] = fmt.Sprintf(`Register-ArgumentCompleter -Native -ScriptBlock $_%v_completer -CommandName '%v'%v'%v.exe'`, defaultName, name, prefix, name)
 	}
 	return fmt.Sprintf(snippetMulti, defaultName, uid.Executable(), strings.Join(complete, "\n"), snippetFuncs)
 }

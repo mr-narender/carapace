@@ -20,7 +20,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 		quoted[i] = fmt.Sprintf("%q", name)
 	}
 	return fmt.Sprintf(`#!/bin/osh
-%[4]v_carapace_%[1]v_completer() {
+%[4]v_%[1]v_completer() {
   local command="${COMP_WORDS[0]}"
   local compline="${COMP_LINE:0:${COMP_POINT}}"
   local IFS=$'\n'
@@ -31,7 +31,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
   [[ ${#COMPREPLY[@]} -eq 1 ]] && COMPREPLY=(${COMPREPLY[@]%%$'\001'})
 }
 
-complete -F _carapace_%[1]v_completer %[3]v
+complete -F _%[1]v_completer %[3]v
 `, defaultName, uid.Executable(), strings.Join(quoted, " "), snippetFuncs)
 }
 

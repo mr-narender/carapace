@@ -42,18 +42,14 @@ func WithSubcommands(cmds ...*cobra.Command) Option {
 		e.subcommandNames = names
 
 		if e.defaultName == "" {
-			if len(cmds) > 0 {
-				e.defaultName = cmds[0].Name()
-			} else {
-				e.defaultName = exe
-			}
+			e.defaultName = exe
 		}
 	}
 }
 
-// WithDefault sets the default subcommand for multi-completer routing
-// when os.Args[4] is not a known subcommand name.
-// Defaults to the first subcommand. No-op without WithSubcommands.
+// WithDefault sets the name used for the shell completer function
+// in multi-completer snippets (e.g. _carapace_<name>_completer).
+// Defaults to the executable name. No-op without WithSubcommands.
 func WithDefault(name string) Option {
 	return func(e *entry) {
 		e.defaultName = name

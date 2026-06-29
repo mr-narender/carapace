@@ -21,7 +21,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 		quoted[i] = fmt.Sprintf("%q", name)
 	}
 	return fmt.Sprintf(`#compdef %[3]v
-%[4]vfunction _carapace_%[1]v_completer {
+%[4]vfunction _%[1]v_completer {
   local command="$(basename $words[1])"
   local compline=${words[@]:0:$CURRENT}
   local IFS=$'\n'
@@ -54,8 +54,8 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
     [[ ${#valuesArr[@]} -gt 1 ]] && _describe -t "${tag}" "${tag}" displaysArr valuesArr -Q -S ''
   done <<<"${data}"
 }
-compquote '' 2>/dev/null && _carapace_%[1]v_completer
-compdef _carapace_%[1]v_completer %[3]v
+compquote '' 2>/dev/null && _%[1]v_completer
+compdef _%[1]v_completer %[3]v
 `, defaultName, uid.Executable(), strings.Join(quoted, " "), snippetFuncs)
 }
 

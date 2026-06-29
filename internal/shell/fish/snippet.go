@@ -20,10 +20,10 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 	for _, name := range names {
 		complete = append(complete,
 			fmt.Sprintf(`complete -e %q`, name),
-			fmt.Sprintf(`complete -c %[2]q -f -a '(_carapace_%[1]v_completer %[2]q)' -r`, defaultName, name),
+			fmt.Sprintf(`complete -c %[2]q -f -a '(_%[1]v_completer %[2]q)' -r`, defaultName, name),
 		)
 	}
-	return fmt.Sprintf(`%[4]vfunction _carapace_%[1]v_completer
+	return fmt.Sprintf(`%[4]vfunction _%[1]v_completer
   set --local data
   IFS='' set data (echo (commandline -cp)'' | sed "s/ \$/ ''/" | xargs %[2]v $argv[1] _carapace fish 2>/dev/null)
   if [ $status -eq 1 ]

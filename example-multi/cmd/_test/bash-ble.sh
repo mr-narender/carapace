@@ -1,5 +1,5 @@
 #!/bin/bash
-_carapace_identify_completer() {
+_example-multi_completer() {
   export COMP_LINE
   export COMP_POINT
   export COMP_TYPE
@@ -27,7 +27,7 @@ _carapace_identify_completer() {
 
 
 
-_identify_completion_ble() {
+_example-multi_completer_ble() {
   if [[ ${BLE_ATTACHED-} ]]; then
     [[ :$comp_type: == *:auto:* ]] && return
 
@@ -46,9 +46,9 @@ _identify_completion_ble() {
       [ ! -z "$cand" ] && ble/complete/cand/yield mandb "${cand%$'\t'*}" "${cand##*$'\t'}"
     done
   else
-    complete -F _carapace_identify_completer "example-multi" "identify" "convert"
+    complete -F _example-multi_completer "example-multi" "identify" "convert"
   fi
 }
 
-complete -F _identify_completion_ble "example-multi" "identify" "convert"
+complete -F _example-multi_completer_ble "example-multi" "identify" "convert"
 

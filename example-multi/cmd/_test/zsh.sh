@@ -1,5 +1,5 @@
 #compdef "example-multi" "identify" "convert"
-function _carapace_identify_completer {
+function _example-multi_completer {
   local command="$(basename $words[1])"
   local compline=${words[@]:0:$CURRENT}
   local IFS=$'\n'
@@ -32,6 +32,6 @@ function _carapace_identify_completer {
     [[ ${#valuesArr[@]} -gt 1 ]] && _describe -t "${tag}" "${tag}" displaysArr valuesArr -Q -S ''
   done <<<"${data}"
 }
-compquote '' 2>/dev/null && _carapace_identify_completer
-compdef _carapace_identify_completer "example-multi" "identify" "convert"
+compquote '' 2>/dev/null && _example-multi_completer
+compdef _example-multi_completer "example-multi" "identify" "convert"
 
