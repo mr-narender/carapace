@@ -26,9 +26,9 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 mut current = (($env | default {} config).config | default {} completions)
 $current.completions = ($current.completions | default {} external)
 $current.completions.external = ($current.completions.external
-||| default true enable
-|||# backwards compatible workaround for default, see nushell #15654
-||| upsert completer { if $in == null { $%[1]v_completer } else { $in } })
+    | default true enable
+    |# backwards compatible workaround for default, see nushell #15654
+    | upsert completer { if $in == null { $%[1]v_completer } else { $in } })
 
 $env.config = $current
 `, sanitizeName(defaultName), uid.Executable(), "", snippetFuncs)
@@ -47,9 +47,9 @@ func SnippetSingle(command string, explicitCommand bool) string {
 mut current = (($env | default {} config).config | default {} completions)
 $current.completions = ($current.completions | default {} external)
 $current.completions.external = ($current.completions.external
-||| default true enable
-|||# backwards compatible workaround for default, see nushell #15654
-||| upsert completer { if $in == null { $%[2]v_completer } else { $in } })
+    | default true enable
+    |# backwards compatible workaround for default, see nushell #15654
+    | upsert completer { if $in == null { $%[2]v_completer } else { $in } })
 
 $env.config = $current
 `, uid.Executable(), sanitizeName(command), command)
