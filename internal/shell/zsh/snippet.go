@@ -16,10 +16,6 @@ func Snippet(cmd *cobra.Command) string {
 
 // SnippetMulti creates a multi-completer zsh completion script.
 func SnippetMulti(names []string, defaultName string, snippetFuncs string) string {
-	quoted := make([]string, len(names))
-	for i, name := range names {
-		quoted[i] = fmt.Sprintf("%q", name)
-	}
 	return fmt.Sprintf(`#compdef %[3]v
 %[4]vfunction _%[1]v_completer {
   local command="$(basename $words[1])"
@@ -56,7 +52,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 }
 compquote '' 2>/dev/null && _%[1]v_completer
 compdef _%[1]v_completer %[3]v
-`, defaultName, uid.Executable(), strings.Join(quoted, " "), snippetFuncs)
+`, defaultName, uid.Executable(), strings.Join(names, " "), snippetFuncs)
 }
 
 // SnippetSingle creates a single-command zsh completion script.
