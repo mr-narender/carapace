@@ -4,7 +4,7 @@ from xonsh.completers.tools import contextual_command_completer
 @contextual_command_completer
 def _carapace_identify_completer(context):
     """carapace multi-completer"""
-    if context.command not in [example-multi]:
+    if context.command not in ['example-multi', 'identify', 'convert']:
         return
 
     from json import loads
