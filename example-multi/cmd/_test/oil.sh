@@ -1,5 +1,5 @@
 #!/bin/osh
-_carapace_identify_completer() {
+_example-multi_completer() {
   local command="${COMP_WORDS[0]}"
   local compline="${COMP_LINE:0:${COMP_POINT}}"
   local IFS=$'\n'
@@ -10,5 +10,5 @@ _carapace_identify_completer() {
   [[ ${#COMPREPLY[@]} -eq 1 ]] && COMPREPLY=(${COMPREPLY[@]%$'\001'})
 }
 
-complete -F _carapace_identify_completer "example-multi" "identify" "convert"
+complete -F _example-multi_completer "example-multi" "identify" "convert"
 

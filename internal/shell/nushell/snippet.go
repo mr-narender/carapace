@@ -14,7 +14,7 @@ func Snippet(cmd *cobra.Command) string {
 
 // SnippetMulti creates a multi-completer nushell completion script.
 func SnippetMulti(names []string, defaultName string, snippetFuncs string) string {
-	return fmt.Sprintf(`%[4]vlet carapace_%[1]v_completer = {|spans|
+	return fmt.Sprintf(`%[4]vlet %[1]v_completer = {|spans|
     %[2]v $spans.0 _carapace nushell ...$spans | from json
 }
 
@@ -23,7 +23,7 @@ $current.completions = ($current.completions | default {} external)
 $current.completions.external = ($current.completions.external
 ||| default true enable
 |||# backwards compatible workaround for default, see nushell #15654
-||| upsert completer { if $in == null { $carapace_%[1]v_completer } else { $in } })
+||| upsert completer { if $in == null { $%[1]v_completer } else { $in } })
 
 $env.config = $current
 `, defaultName, uid.Executable(), "", snippetFuncs)
@@ -35,7 +35,7 @@ $env.config = $current
 // When false, only the minimal completer function is generated (standalone mode).
 func SnippetSingle(command string, explicitCommand bool) string {
 	if explicitCommand {
-		return fmt.Sprintf(`let carapace_%[2]v_completer = {|spans|
+		return fmt.Sprintf(`let %[2]v_completer = {|spans|
     %[1]v %[2]v _carapace nushell ...$spans | from json
 }
 
@@ -44,7 +44,7 @@ $current.completions = ($current.completions | default {} external)
 $current.completions.external = ($current.completions.external
 ||| default true enable
 |||# backwards compatible workaround for default, see nushell #15654
-||| upsert completer { if $in == null { $carapace_%[2]v_completer } else { $in } })
+||| upsert completer { if $in == null { $%[2]v_completer } else { $in } })
 
 $env.config = $current
 `, uid.Executable(), command)

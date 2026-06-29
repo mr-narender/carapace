@@ -20,7 +20,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 		quoted[i] = fmt.Sprintf("%q", name)
 	}
 	return fmt.Sprintf(`#!/bin/bash
-%[4]v_carapace_%[1]v_completer() {
+%[4]v_%[1]v_completer() {
   export COMP_LINE
   export COMP_POINT
   export COMP_TYPE
@@ -46,7 +46,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
   [[ "${COMPREPLY[*]}" == "" ]] && COMPREPLY=() # fix for mapfile creating a non-empty array from empty command output
 }
 
-complete -o noquote -F _carapace_%[1]v_completer %[3]v
+complete -o noquote -F _%[1]v_completer %[3]v
 `, defaultName, uid.Executable(), strings.Join(quoted, " "), snippetFuncs)
 }
 

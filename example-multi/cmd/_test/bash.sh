@@ -1,5 +1,5 @@
 #!/bin/bash
-_carapace_identify_completer() {
+_example-multi_completer() {
   export COMP_LINE
   export COMP_POINT
   export COMP_TYPE
@@ -25,5 +25,5 @@ _carapace_identify_completer() {
   [[ "${COMPREPLY[*]}" == "" ]] && COMPREPLY=() # fix for mapfile creating a non-empty array from empty command output
 }
 
-complete -o noquote -F _carapace_identify_completer "example-multi" "identify" "convert"
+complete -o noquote -F _example-multi_completer "example-multi" "identify" "convert"
 

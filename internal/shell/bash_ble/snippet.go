@@ -24,7 +24,7 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 	quotedJoined := strings.Join(quoteAll(names), " ")
 
 	return fmt.Sprintf(`%v
-_%[2]v_completion_ble() {
+_%[2]v_completer_ble() {
   if [[ ${BLE_ATTACHED-} ]]; then
     [[ :$comp_type: == *:auto:* ]] && return
 
@@ -43,11 +43,11 @@ _%[2]v_completion_ble() {
       [ ! -z "$cand" ] && ble/complete/cand/yield mandb "${cand%%$'\t'*}" "${cand##*$'\t'}"
     done
   else
-    complete -F _carapace_%[2]v_completer %[4]v
+    complete -F _%[2]v_completer %[4]v
   fi
 }
 
-complete -F _%[2]v_completion_ble %[4]v
+complete -F _%[2]v_completer_ble %[4]v
 `, bashSnip, defaultName, uid.Executable(), quotedJoined)
 }
 

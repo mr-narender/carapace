@@ -354,6 +354,20 @@ func TestGenWithDefault(t *testing.T) {
 	}
 }
 
+func TestGenWithSubcommandsDefaultName(t *testing.T) {
+	sub1 := &cobra.Command{Use: "sub1"}
+	sub2 := &cobra.Command{Use: "sub2"}
+	root := &cobra.Command{Use: "root"}
+
+	Gen(root, WithSubcommands(sub1, sub2))
+
+	entry := storage.get(root)
+	exe := uid.Executable()
+	if entry.defaultName != exe {
+		t.Errorf("expected defaultName '%v' (executable), got '%v'", exe, entry.defaultName)
+	}
+}
+
 func TestGenWithDefaultNoop(t *testing.T) {
 	cmd := &cobra.Command{Use: "test"}
 	Gen(cmd, WithDefault("sub1"))

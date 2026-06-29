@@ -14,7 +14,7 @@ func TestSnippetBash(t *testing.T) {
 	if !strings.Contains(s, "#!/bin/bash") {
 		t.Error("missing bash shebang")
 	}
-	if !strings.Contains(s, `_carapace_sub1_completer`) {
+	if !strings.Contains(s, `_sub1_completer`) {
 		t.Error("missing completer function name")
 	}
 	if !strings.Contains(s, `"${command}"`) {
@@ -37,7 +37,7 @@ func TestSnippetZsh(t *testing.T) {
 	if !strings.Contains(s, "#compdef") {
 		t.Error("missing compdef header")
 	}
-	if !strings.Contains(s, `_carapace_sub1_completer`) {
+	if !strings.Contains(s, `_sub1_completer`) {
 		t.Error("missing completer function name")
 	}
 	if !strings.Contains(s, `"${command}"`) {
@@ -51,7 +51,7 @@ func TestSnippetFish(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if !strings.Contains(s, `function _carapace_sub1_completer`) {
+	if !strings.Contains(s, `function _sub1_completer`) {
 		t.Error("missing completer function name")
 	}
 	if !strings.Contains(s, `$argv[1]`) {
@@ -86,7 +86,7 @@ func TestSnippetNushell(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if !strings.Contains(s, `carapace_sub1_completer`) {
+	if !strings.Contains(s, `sub1_completer`) {
 		t.Error("missing completer name")
 	}
 	if !strings.Contains(s, `$spans.0`) {
@@ -103,7 +103,7 @@ func TestSnippetPowershell(t *testing.T) {
 	if !strings.Contains(s, "System.Management.Automation") {
 		t.Error("missing namespace")
 	}
-	if !strings.Contains(s, `$_carapace_sub1_completer`) {
+	if !strings.Contains(s, `$_sub1_completer`) {
 		t.Error("missing completer variable")
 	}
 	if !strings.Contains(s, `($elems[0] -replace ('\.exe$', ''))`) {
@@ -134,7 +134,7 @@ func TestSnippetOil(t *testing.T) {
 	if !strings.Contains(s, "#!/bin/osh") {
 		t.Error("missing osh shebang")
 	}
-	if !strings.Contains(s, `_carapace_sub1_completer`) {
+	if !strings.Contains(s, `_sub1_completer`) {
 		t.Error("missing completer function name")
 	}
 }
