@@ -25,7 +25,7 @@ from xonsh.completers.tools import contextual_command_completer
 @contextual_command_completer
 def _carapace_%[1]v_completer(context):
     """carapace multi-completer"""
-    if context.command not in [%v]:
+    if context.command not in [%[3]v]:
         return
 
     from json import loads
