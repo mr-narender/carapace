@@ -261,3 +261,68 @@ func TestSnippetFuncsForShell(t *testing.T) {
 		t.Error("expected empty for missing shell key")
 	}
 }
+
+func TestSnippetHyphenatedDefaultName(t *testing.T) {
+	names := []string{"example-multi", "sub1"}
+	// PowerShell and xonsh use underscore-prefixed identifiers
+	shells := []string{"powershell", "xonsh"}
+	for _, sh := range shells {
+		s, err := Snippet(sh, names, "example-multi", nil)
+		if err != nil {
+			t.Errorf("%v: %v", sh, err)
+		}
+		if strings.Contains(s, `_example-multi_`) {
+			t.Errorf("%v: hyphenated identifier not sanitized in snippet: %s", sh, s)
+		}
+		if !strings.Contains(s, `_example__multi_`) {
+			t.Errorf("%v: missing sanitized identifier in snippet", sh)
+		}
+		if !strings.Contains(s, `example-multi`) {
+			t.Errorf("%v: missing raw command name in registration", sh)
+		}
+	}
+
+	// nushell uses variable names without underscore prefix
+	s, err := Snippet("nushell", names, "example-multi", nil)
+	if err != nil {
+		t.Error(err)
+	}
+	if strings.Contains(s, `example-multi_completer`) {
+		t.Error("nushell: hyphenated identifier not sanitized")
+	}
+	if !strings.Contains(s, `example__multi_completer`) {
+		t.Error("nushell: missing sanitized identifier")
+	}
+}
+
+func TestSingleSnippetHyphenatedCommand(t *testing.T) {
+	shells := []string{"powershell", "xonsh"}
+	names := []string{"example-multi", "sub1"}
+	for _, sh := range shells {
+		s, err := SingleSnippet(sh, "example-multi", names, "example-multi", nil)
+		if err != nil {
+			t.Errorf("%v: %v", sh, err)
+		}
+		if strings.Contains(s, `_example-multi_`) {
+			t.Errorf("%v: hyphenated identifier not sanitized in single snippet", sh)
+		}
+		if !strings.Contains(s, `_example__multi_`) {
+			t.Errorf("%v: missing sanitized identifier in single snippet", sh)
+		}
+		if !strings.Contains(s, `example-multi`) {
+			t.Errorf("%v: missing raw command name in single snippet", sh)
+		}
+	}
+
+	// nushell uses variable names without underscore prefix
+	s, err := SingleSnippet("nushell", "example-multi", names, "example-multi", nil)
+	if err != nil {
+		t.Error(err)
+	}
+	if strings.Contains(s, `example-multi_completer`) {
+		t.Error("nushell: hyphenated identifier not sanitized")
+	}
+	if !strings.Contains(s, `example__multi_completer`) {
+		t.Error("nushell: missing sanitized identifier")
+	}
+}

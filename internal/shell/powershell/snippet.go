@@ -90,9 +90,9 @@ $_%[2]v_completion = {
 
     $completions = @(
       if (!$wordToComplete) {
-        %[1]v %[2]v _carapace powershell $($elems| ForEach-Object {$_}) '' | ConvertFrom-Json | ForEach-Object { [CompletionResult]::new($_.CompletionText, $_.ListItemText.replace('` + "`" + `e[', "` + "`" + `e["), [CompletionResultType]::ParameterValue, $_.ToolTip.replace('` + "`" + `e[', "` + "`" + `e[")) }
+        %[1]v %[3]v _carapace powershell $($elems| ForEach-Object {$_}) '' | ConvertFrom-Json | ForEach-Object { [CompletionResult]::new($_.CompletionText, $_.ListItemText.replace('` + "`" + `e[', "` + "`" + `e["), [CompletionResultType]::ParameterValue, $_.ToolTip.replace('` + "`" + `e[', "` + "`" + `e[")) }
       } else {
-        %[1]v %[2]v _carapace powershell $($elems| ForEach-Object {$_}) | ConvertFrom-Json | ForEach-Object { [CompletionResult]::new($_.CompletionText, $_.ListItemText.replace('` + "`" + `e[', "` + "`" + `e["), [CompletionResultType]::ParameterValue, $_.ToolTip.replace('` + "`" + `e[', "` + "`" + `e[")) }
+        %[1]v %[3]v _carapace powershell $($elems| ForEach-Object {$_}) | ConvertFrom-Json | ForEach-Object { [CompletionResult]::new($_.CompletionText, $_.ListItemText.replace('` + "`" + `e[', "` + "`" + `e["), [CompletionResultType]::ParameterValue, $_.ToolTip.replace('` + "`" + `e[', "` + "`" + `e[")) }
       }
     )
 
@@ -103,7 +103,7 @@ $_%[2]v_completion = {
     $completions
 }
 
-%[3]v
+%[4]v
 `
 
 const snippetMulti = `using namespace System.Management.Automation
@@ -154,6 +154,10 @@ $_%[1]v_completer = {
 %[3]v
 `
 
+func sanitize(s string) string {
+	return strings.ReplaceAll(s, "-", "__")
+}
+
 // Snippet creates the powershell completion script.
 func Snippet(cmd *cobra.Command) string {
 	return SnippetSingle(cmd.Name(), false)
@@ -167,9 +171,9 @@ func SnippetMulti(names []string, defaultName string, snippetFuncs string) strin
 		if runtime.GOOS == "windows" {
 			prefix = ""
 		}
-		complete[i] = fmt.Sprintf(`Register-ArgumentCompleter -Native -ScriptBlock $_%v_completer -CommandName '%v'%v'%v.exe'`, defaultName, name, prefix, name)
+		complete[i] = fmt.Sprintf(`Register-ArgumentCompleter -Native -ScriptBlock $_%v_completer -CommandName '%v'%v'%v.exe'`, sanitize(defaultName), name, prefix, name)
 	}
-	return fmt.Sprintf(snippetMulti, defaultName, uid.Executable(), strings.Join(complete, "\n"), snippetFuncs)
+	return fmt.Sprintf(snippetMulti, sanitize(defaultName), uid.Executable(), strings.Join(complete, "\n"), snippetFuncs)
 }
 
 // SnippetSingle creates a single-command powershell completion script.
@@ -183,15 +187,15 @@ func SnippetSingle(command string, explicitCommand bool) string {
 	}
 
 	if explicitCommand {
-		complete := fmt.Sprintf(`Register-ArgumentCompleter -Native -ScriptBlock $_%v_completion -CommandName '%v'%v'%v.exe'`, command, command, prefix, command)
-		return fmt.Sprintf(snippetMultiSingle, uid.Executable(), command, complete)
+		complete := fmt.Sprintf(`Register-ArgumentCompleter -Native -ScriptBlock $_%v_completion -CommandName '%v'%v'%v.exe'`, sanitize(command), command, prefix, command)
+		return fmt.Sprintf(snippetMultiSingle, uid.Executable(), sanitize(command), command, complete)
 	}
 
 	return fmt.Sprintf(snippetOriginal,
-		command,
+		sanitize(command),
 		uid.Executable(),
 		uid.Executable(),
-		command,
+		sanitize(command),
 		command,
 		prefix,
 		command)
