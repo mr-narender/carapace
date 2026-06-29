@@ -48,7 +48,7 @@ def _%[1]v_completer(context):
     return result
 
 add_one_completer('%[1]v', _%[1]v_completer, 'start')
-`, defaultName, uid.Executable(), strings.Join(complete, ", "), "", snippetFuncs)
+`, strings.ReplaceAll(defaultName, "-", "__"), uid.Executable(), strings.Join(complete, ", "), "", snippetFuncs)
 }
 
 // SnippetSingle creates a single-command xonsh completion script.
