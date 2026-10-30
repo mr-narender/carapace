@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	shlex "github.com/carapace-sh/carapace-shlex/v2"
 	"github.com/carapace-sh/carapace/pkg/uid"
 	"github.com/spf13/cobra"
 )
@@ -15,9 +16,9 @@ func Snippet(cmd *cobra.Command) string {
 
 // SnippetMulti creates a multi-completer xonsh completion script.
 func SnippetMulti(names []string, defaultName string, snippetFuncs string) string {
-	complete := make([]string, len(names))
-	for i, name := range names {
-		complete[i] = fmt.Sprintf("'%v'", name)
+	complete := make([]string, 0, len(names))
+	for _, name := range names {
+		complete = append(complete, fmt.Sprintf("'%v'", shlex.Escape(name, shlex.Xonsh)))
 	}
 	return fmt.Sprintf(`%[5]vfrom xonsh.completers.completer import add_one_completer
 from xonsh.completers.tools import contextual_command_completer
@@ -44,11 +45,11 @@ def _%[1]v_completer(context):
     except:
         result = {}
     if len(result) == 0:
-        result = {RichCompletion(context.prefix, display=context.prefix, description='', prefix_len=len(context.raw_prefix), append_closing_quote=False)}
+        raise StopIteration
     return result
 
 add_one_completer('%[1]v', _%[1]v_completer, 'start')
-`, strings.ReplaceAll(defaultName, "-", "__"), uid.Executable(), strings.Join(complete, ", "), "", snippetFuncs)
+`, strings.ReplaceAll(defaultName, "-", "__"), shlex.Escape(uid.Executable(), shlex.Xonsh), strings.Join(complete, ", "), "", snippetFuncs)
 }
 
 // SnippetSingle creates a single-command xonsh completion script.
@@ -56,11 +57,12 @@ add_one_completer('%[1]v', _%[1]v_completer, 'start')
 // (for multi-completer subcommands). When false, the executable is invoked
 // without an explicit command (standalone mode).
 func SnippetSingle(command string, explicitCommand bool) string {
+
 	functionName := strings.ReplaceAll(command, "-", "__")
 
-	invocation := fmt.Sprintf("'%v', '_carapace', 'xonsh'", uid.Executable())
+	invocation := fmt.Sprintf("'%v', '_carapace', 'xonsh'", shlex.Escape(uid.Executable(), shlex.Xonsh))
 	if explicitCommand {
-		invocation = fmt.Sprintf("'%v', '%v', '_carapace', 'xonsh'", uid.Executable(), command)
+		invocation = fmt.Sprintf("'%v', '%v', '_carapace', 'xonsh'", shlex.Escape(uid.Executable(), shlex.Xonsh), shlex.Escape(command, shlex.Xonsh))
 	}
 
 	return fmt.Sprintf(`from xonsh.completers.completer import add_one_completer
@@ -86,9 +88,9 @@ def _%v_completer(context):
         except:
             result = {}
         if len(result) == 0:
-            result = {RichCompletion(context.prefix, display=context.prefix, description='', prefix_len=len(context.raw_prefix), append_closing_quote=False)}
+            raise StopIteration
         return result
 
 add_one_completer('%v', _%v_completer, 'start')
-`, functionName, command, command, invocation, command, functionName)
+`, functionName, command, shlex.Escape(command, shlex.Xonsh), invocation, command, functionName)
 }
