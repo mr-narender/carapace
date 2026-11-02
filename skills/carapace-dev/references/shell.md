@@ -1,6 +1,6 @@
 # Carapace Library: Per-Shell Output Formatting
 
-Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specific completion output — how `RawValues` and `Meta` are formatted for each of the 12 supported shells, and how the shells differ.
+Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specific completion output — how `RawValues` and `Meta` are formatted for each of the 11 supported shells, and how the shells differ.
 
 ## Supported Shells
 
@@ -12,7 +12,6 @@ Reference for [carapace](https://github.com/carapace-sh/carapace)'s shell-specif
 | Cmd (Clink) | `cmd-clink` | `internal/shell/cmd_clink/` | **cmd-clink** skill |
 | Elvish | `elvish` | `internal/shell/elvish/` | `references/shell-elvish.md` |
 | Fish | `fish` | `internal/shell/fish/` | `references/shell-fish.md` |
-| Ion | `ion` | `internal/shell/ion/` | **ion** skill |
 | Nushell | `nushell` | `internal/shell/nushell/` | `references/shell-nushell.md` |
 | PowerShell | `powershell` | `internal/shell/powershell/` | `references/shell-powershell.md` |
 | Tcsh | `tcsh` | `internal/shell/tcsh/` | **tcsh** skill |
@@ -60,17 +59,18 @@ Each shell package has a `Snippet(cmd *cobra.Command) string` function that gene
 | **Tag grouping** | Not supported | Not supported | Not supported | Native via `_describe -t` | Not supported | Not supported | Not supported | Not supported | Not supported |
 | **Flag merging** | Explicit only (`CARAPACE_MERGEFLAGS`) | Explicit only | Explicit only | **Implicit** (always merges) | Explicit only | Explicit only | Explicit only | Explicit only | Explicit only |
 | **Named directories** | Not supported | Not supported | Not supported | Supported via `hash -d` | Not supported | Not supported | Not supported | Not supported | Not supported |
+| **Homedir expansion (`~user`)** | Values keep `~user/` prefix (leading `~` unescaped) | Same as bash | Raw prefix pass-through | Values keep `~user/` prefix, `~` unescaped in `quoteValue` | Raw prefix pass-through (builtin truncates trailing separator at insertion) | Raw prefix pass-through | Leading `~` kept outside quotes | Raw prefix pass-through | Not supported (no `~user` expansion, pwsh expands only `~/`) |
 | **Extra env vars** | `COMP_LINE`, `COMP_POINT`, `COMP_TYPE`, `COMP_WORDBREAKS` | Same as bash | `COMP_LINE`, `COMP_POINT` | `CARAPACE_COMPLINE`, `CARAPACE_ZSH_HASH_DIRS` | None | None | None | None | None |
 
 ### Secondary Shells
 
-| Feature | Tcsh | Ion | Clink |
+| Feature | Tcsh | Clink |
 |---------|------|-----|-------|
-| **Output format** | Values on lines, backslash-escaped | JSON `{Value, Display}` | Tab-delimited `value\tdisplay\tdesc\tsuffix` |
-| **Nospace** | Built-in support | Trailing space in `Value` | Per-candidate `appendchar` field |
-| **Style/color** | Not supported | Not supported | Not supported |
-| **Go-side patching** | None | None | `cmd_clink.Patch()` (redirects via CARAPACE_COMPLINE) |
-| **Snippet** | `complete` with `$COMMAND_LINE` | Empty (no snippet) | Lua function with `CARAPACE_COMPLINE` |
+| **Output format** | Values on lines, backslash-escaped | Tab-delimited `value\tdisplay\tdesc\tsuffix` |
+| **Nospace** | Built-in support | Per-candidate `appendchar` field |
+| **Style/color** | Not supported | Not supported |
+| **Go-side patching** | None | `cmd_clink.Patch()` (redirects via CARAPACE_COMPLINE) |
+| **Snippet** | `complete` with `$COMMAND_LINE` | Lua function with `CARAPACE_COMPLINE` |
 
 ### Export Format
 
@@ -127,6 +127,15 @@ Only three shells require argument patching before traversal:
 | Clink | `cmd_clink.Patch()` | Re-lexes `CARAPACE_COMPLINE` with carapace-shlex; strips redirects |
 
 All other shells pass arguments directly to `traverse()` without patching.
+
+## Homedir Expansion (`~user`)
+
+`ActionFiles`/`ActionDirectories` support completion under other users' home directories (unix only):
+
+- `~<TAB>` completes usernames as `~name/` candidates (read from `/etc/passwd`) — `actionUsers()` in internalActions.go; note: the home directory description is dropped by the implicit `MultiParts("/")` of file completion, since it only keeps descriptions when value and current word have the same number of parts
+- `~user/rest<TAB>` lists inside the user's home directory; `expandHome()` in context.go resolves the prefix, while candidates keep the `~user/` prefix so the shell re-expands it at execution
+- values are listed only when their shell supports leading-tilde expansion on insertion: bash, bash-ble, fish, oil, tcsh, xonsh, zsh, nushell pass the value through (zsh via `quoteValue`, bash/nushell via explicit "assume homedir expansion" branches); cmd-clink (windows only) and PowerShell don't support `~user` expansion and are not affected — pwsh expands only `~/` (own home, also on unix), nothing else
+- note: fish inserts a `~name/` candidate as `~name` (separator truncated) until the user types a slash — its native username completion behaves the same
 
 ## Quoting Complexity Comparison
 
