@@ -416,6 +416,15 @@ func (a Action) Suffix(suffix string) Action {
 	})
 }
 
+// Quote quotes values as double-quoted string literals.
+//
+//	carapace.ActionValues(`say "hi"`).Quote()
+func (a Action) Quote() Action {
+	return ActionCallback(func(c Context) Action {
+		return a.Invoke(c).Quote().ToA()
+	})
+}
+
 // Suppress suppresses specific error messages using regular expressions.
 func (a Action) Suppress(expr ...string) Action {
 	return ActionCallback(func(c Context) Action {
