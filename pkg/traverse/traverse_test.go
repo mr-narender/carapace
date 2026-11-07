@@ -11,6 +11,16 @@ type mockContext struct {
 	env []string
 }
 
+// canonical resolves symlinks and short names (windows) and normalizes separators so that
+// paths built from tempdirs match paths reported by the filesystem (e.g. /var -> /private/var on macOS).
+func canonical(t *testing.T, path string) string {
+	t.Helper()
+	if resolved, err := filepath.EvalSymlinks(path); err == nil {
+		path = resolved
+	}
+	return filepath.ToSlash(filepath.Clean(path))
+}
+
 func (m mockContext) Abs(s string) (string, error) {
 	if s == "" {
 		if m.dir == "" {
@@ -63,8 +73,8 @@ func TestParentSymlinkedDir(t *testing.T) {
 		t.Fatalf("Parent(.git) failed from symlinked dir: %v", err)
 	}
 
-	expected := filepath.ToSlash(repoDir)
-	if result != expected {
+	expected := canonical(t, repoDir)
+	if canonical(t, result) != expected {
 		t.Errorf("expected %q, got %q", expected, result)
 	}
 }
@@ -92,8 +102,8 @@ func TestParentNormalDir(t *testing.T) {
 		t.Fatalf("Parent(.git) failed from normal dir: %v", err)
 	}
 
-	expected := filepath.ToSlash(repoDir)
-	if result != expected {
+	expected := canonical(t, repoDir)
+	if canonical(t, result) != expected {
 		t.Errorf("expected %q, got %q", expected, result)
 	}
 }
@@ -126,8 +136,8 @@ func TestGitWorkTreeSymlinkedDir(t *testing.T) {
 		t.Fatalf("GitWorkTree failed from symlinked dir: %v", err)
 	}
 
-	expected := filepath.ToSlash(repoDir)
-	if result != expected {
+	expected := canonical(t, repoDir)
+	if canonical(t, result) != expected {
 		t.Errorf("expected %q, got %q", expected, result)
 	}
 }
@@ -160,8 +170,8 @@ func TestGitDirSymlinkedDir(t *testing.T) {
 		t.Fatalf("GitDir failed from symlinked dir: %v", err)
 	}
 
-	expected := filepath.ToSlash(repoDir + "/.git")
-	if result != expected {
+	expected := canonical(t, filepath.Join(repoDir, ".git"))
+	if canonical(t, result) != expected {
 		t.Errorf("expected %q, got %q", expected, result)
 	}
 }
