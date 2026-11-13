@@ -83,6 +83,32 @@ func (ia InvokedAction) Suffix(suffix string) InvokedAction {
 	return ia
 }
 
+// Quote quotes values as double-quoted string literals. Only the inserted
+// values are modified; display values are left untouched.
+//
+//	carapace.ActionValues(`say "hi"`).Invoke(c).Quote()
+func (ia InvokedAction) Quote() InvokedAction {
+	for index, val := range ia.action.rawValues {
+		ia.action.rawValues[index].Value = fmt.Sprintf("%q", val.Value)
+	}
+	ia.action.meta.Queries.Modify("quote()")
+	return ia
+}
+
+// Escape escapes values so they can be embedded in a double-quoted string
+// literal without adding surrounding quotes. Only the inserted values are
+// modified; display values are left untouched.
+//
+//	carapace.ActionValues(`say "hi"`).Invoke(c).Escape()
+func (ia InvokedAction) Escape() InvokedAction {
+	for index, val := range ia.action.rawValues {
+		quoted := fmt.Sprintf("%q", val.Value)
+		ia.action.rawValues[index].Value = quoted[1 : len(quoted)-1]
+	}
+	ia.action.meta.Queries.Modify("escape()")
+	return ia
+}
+
 // UidF TODO experimental
 func (ia InvokedAction) UidF(f func(s string) (*url.URL, error)) InvokedAction {
 	for index, v := range ia.action.rawValues {
