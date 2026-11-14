@@ -5,7 +5,9 @@ import (
 	"os"
 	"strings"
 
+	shlex "github.com/carapace-sh/carapace-shlex/v2"
 	"github.com/carapace-sh/carapace/internal/common"
+	"github.com/carapace-sh/carapace/internal/env"
 )
 
 var sanitizer = strings.NewReplacer(
@@ -80,16 +82,33 @@ func commonValuePrefix(values ...common.RawValue) (prefix string) {
 
 // ActionRawValues formats values for bash.
 func ActionRawValues(currentWord string, meta common.Meta, values common.RawValues) string {
+	ctx := shlex.Complete(env.Compline(), shlex.Bash)
+	singleQuoted := ctx.QuotingState == shlex.QUOTING_STATE
+
 	for index, value := range values {
 		values[index].Value = strings.TrimPrefix(value.Value, wordbreakPrefix)
 	}
 
 	lastSegment := strings.TrimPrefix(currentWord, wordbreakPrefix) // last segment of currentWord split by COMP_WORDBREAKS
+
+	// bash replaces the current word with the longest common prefix of all candidates,
+	// so candidates that don't extend the current word would erase typed characters
+	// (e.g. `~steam/D` also matching `~steam/d1/` case-insensitively).
+	extended := make(common.RawValues, 0, len(values))
+	for _, val := range values {
+		if strings.HasPrefix(val.Value, lastSegment) {
+			extended = append(extended, val)
+		}
+	}
+	if len(extended) > 0 && len(extended) < len(values) {
+		values = extended
+	}
+
 	if len(values) > 1 && commonDisplayPrefix(values...) != "" {
-		// When all display values have the same prefix bash will insert is as partial completion (which skips prefixes/formatting).
-		if valuePrefix := commonValuePrefix(values...); lastSegment != valuePrefix {
-			// replace values with common value prefix
-			values = common.RawValuesFrom(commonValuePrefix(values...))
+		// When all display values have the same prefix bash will insert it as partial completion (which skips prefixes/formatting).
+		if valuePrefix := commonValuePrefix(values...); lastSegment != valuePrefix && strings.HasPrefix(valuePrefix, lastSegment) {
+			// replace values with common value prefix as it extends the current word
+			values = common.RawValuesFrom(valuePrefix)
 		} else {
 			// prevent insertion of partial display values by prefixing one with space
 			values[0].Display = " " + values[0].Display
@@ -105,6 +124,9 @@ func ActionRawValues(currentWord string, meta common.Meta, values common.RawValu
 
 			vals[index] = sanitizer.Replace(val.Value)
 			switch {
+			case singleQuoted:
+				// Readline retains the opening single quote, so use matching quotes.
+				vals[index] = "'" + strings.ReplaceAll(vals[index], "'", `'\''`) + "'"
 			case strings.HasPrefix(vals[index], "~"): // assume homedir expansion
 				vals[index] = escapingReplacer.Replace(vals[index])
 			case requiresQuoting(vals[index]):

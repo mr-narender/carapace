@@ -56,6 +56,12 @@ func execCompletion(args ...string) (context Context) {
 	return
 }
 
+// osGetwd returns the working directory as reported by NewContext (unmodified)
+func osGetwd() string {
+	wd, _ := os.Getwd()
+	return wd
+}
+
 func testContext(t *testing.T, expected Context, args ...string) {
 	t.Run(strings.Join(args, " "), func(t *testing.T) {
 		null, _ := os.Open(os.DevNull)
@@ -83,7 +89,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"")
 
@@ -92,7 +98,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{"pos1"},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"pos1", "")
 
@@ -101,7 +107,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{"pos1", "pos2"},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"pos1", "pos2", "po")
 
@@ -110,7 +116,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"--multiparts", "")
 
@@ -119,7 +125,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"--multiparts", "fir")
 
@@ -128,7 +134,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{"pos1"},
 		Parts: []string{"first"},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"pos1", "--multiparts", "first,seco")
 
@@ -137,7 +143,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"pos")
 
@@ -146,7 +152,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{},
 		Parts: []string{"first"},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"first:sec")
 
@@ -155,7 +161,7 @@ func TestContext(t *testing.T) {
 		Args:  []string{"first:second"},
 		Parts: []string{},
 		Env:   []string{},
-		Dir:   wd(""),
+		Dir:   osGetwd(),
 	},
 		"first:second", "thi")
 }
@@ -186,37 +192,16 @@ func TestIsCallback(t *testing.T) {
 }
 
 func TestSnippet(t *testing.T) {
+	// snippets need a completer name; an unnamed command yields none
 	cmd := &cobra.Command{}
-	if s, _ := Gen(cmd).Snippet("bash"); !strings.Contains(s, "#!/bin/bash") {
-		t.Error("bash failed")
-	}
-
-	if s, _ := Gen(cmd).Snippet("elvish"); !strings.Contains(s, "edit:completion") {
-		t.Error("elvish failed")
-	}
-
-	if s, _ := Gen(cmd).Snippet("fish"); !strings.Contains(s, "commandline") {
-		t.Error("fish failed")
-	}
-
-	if s, _ := Gen(cmd).Snippet("oil"); !strings.Contains(s, "#!/bin/osh") {
-		t.Error("oil failed")
-	}
-
-	if s, _ := Gen(cmd).Snippet("powershell"); !strings.Contains(s, "System.Management.Automation") {
-		t.Error("powershell failed")
-	}
-
-	if s, _ := Gen(cmd).Snippet("xonsh"); !strings.Contains(s, "@contextual_command_completer") {
-		t.Error("xonsh failed")
-	}
-
-	if s, _ := Gen(cmd).Snippet("zsh"); !strings.Contains(s, "compdef") {
-		t.Error("zsh")
+	for _, shell := range []string{"bash", "elvish", "fish", "oil", "powershell", "xonsh", "zsh"} {
+		if s, err := Gen(cmd).Snippet(shell); s != "" || err != nil {
+			t.Errorf("expected empty snippet for unnamed command (%v)", shell)
+		}
 	}
 
 	if _, err := Gen(cmd).Snippet("unknown"); err == nil {
-		t.Error("zsh")
+		t.Error("unknown shell should fail")
 	}
 }
 

@@ -8,11 +8,11 @@ _example-multi_completer() {
   local nospace data compline="${COMP_LINE:0:${COMP_POINT}}"
   local command="${COMP_WORDS[0]}"
 
-  data=$(echo "${compline}''" | xargs example-multi "${command}" _carapace bash 2>/dev/null)
+  data=$(echo "${compline}''" | CARAPACE_COMPLINE="${compline}" xargs example-multi "${command}" _carapace bash 2>/dev/null)
   if [ $? -eq 1 ]; then
-    data=$(echo "${compline}'" | xargs example-multi "${command}" _carapace bash 2>/dev/null)
+    data=$(echo "${compline}'" | CARAPACE_COMPLINE="${compline}" xargs example-multi "${command}" _carapace bash 2>/dev/null)
     if [ $? -eq 1 ]; then
-    	data=$(echo "${compline}\"" | xargs example-multi "${command}" _carapace bash 2>/dev/null)
+    	data=$(echo "${compline}\"" | CARAPACE_COMPLINE="${compline}" xargs example-multi "${command}" _carapace bash 2>/dev/null)
     fi
   fi
 
@@ -25,5 +25,5 @@ _example-multi_completer() {
   [[ "${COMPREPLY[*]}" == "" ]] && COMPREPLY=() # fix for mapfile creating a non-empty array from empty command output
 }
 
-complete -o noquote -F _example-multi_completer "example-multi" "identify" "convert"
+complete -o noquote -F _example-multi_completer example-multi identify convert
 
