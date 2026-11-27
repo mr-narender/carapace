@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	shlex "github.com/carapace-sh/carapace-shlex/v2"
 	"github.com/carapace-sh/carapace/internal/shell/bash"
 	"github.com/carapace-sh/carapace/pkg/uid"
 
@@ -48,7 +49,7 @@ _%[2]v_completer_ble() {
 }
 
 complete -F _%[2]v_completer_ble %[4]v
-`, bashSnip, defaultName, uid.Executable(), quotedJoined)
+`, bashSnip, defaultName, shlex.Quote(uid.Executable(), shlex.Bash), quotedJoined)
 }
 
 // SnippetSingle creates a single-command bash-ble completion script.
@@ -56,6 +57,7 @@ complete -F _%[2]v_completer_ble %[4]v
 // (for multi-completer subcommands). When false, the executable is invoked
 // without an explicit command (standalone mode).
 func SnippetSingle(command string, explicitCommand bool) string {
+
 	bashSnip := bash.SnippetSingle(command, explicitCommand)
 	if explicitCommand {
 		bashSnip = regexp.MustCompile(`complete -o noquote -F [^\n]+`).ReplaceAllString(bashSnip, "")
@@ -63,9 +65,9 @@ func SnippetSingle(command string, explicitCommand bool) string {
 		bashSnip = regexp.MustCompile(`complete -F [^\n]+`).ReplaceAllString(bashSnip, "")
 	}
 
-	invocation := fmt.Sprintf("%v _carapace bash-ble", uid.Executable())
+	invocation := fmt.Sprintf("%v _carapace bash-ble", shlex.Quote(uid.Executable(), shlex.Bash))
 	if explicitCommand {
-		invocation = fmt.Sprintf("%v %v _carapace bash-ble", uid.Executable(), command)
+		invocation = fmt.Sprintf("%v %v _carapace bash-ble", shlex.Quote(uid.Executable(), shlex.Bash), shlex.Quote(command, shlex.Bash))
 	}
 
 	return fmt.Sprintf(`%v
@@ -92,13 +94,13 @@ _%[2]v_completion_ble() {
 }
 
 complete -F _%[2]v_completion_ble %[2]v
-`, bashSnip, command, invocation)
+`, bashSnip, command, invocation, shlex.Quote(command, shlex.Bash))
 }
 
 func quoteAll(names []string) []string {
 	quoted := make([]string, len(names))
 	for i, name := range names {
-		quoted[i] = fmt.Sprintf("%q", name)
+		quoted[i] = shlex.Quote(name, shlex.Bash)
 	}
 	return quoted
 }

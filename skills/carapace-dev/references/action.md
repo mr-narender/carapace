@@ -110,6 +110,8 @@ All return `Action` (chainable). Most wrap in `ActionCallback` for lazy evaluati
 |--------|-----------|---------|
 | `Prefix` | `(prefix string)` | Add prefix to inserted values (not display) |
 | `Suffix` | `(suffix string)` | Add suffix to inserted values (not display) |
+| `Quote` | `()` | Quote values as double-quoted string literals (not display) |
+| `Escape` | `()` | Escape values for embedding in a double-quoted string literal (not display) |
 | `NoSpace` | `(suffixes ...rune)` | Disable trailing space for chars (`'*'` = all) |
 | `NoPrefix` | `(prefixes ...rune)` | Disable common prefix insertion for given prefixes (`'*'` = all) |
 
@@ -191,6 +193,8 @@ Operate on already-materialized values:
 | `Prefix(prefix)` | Add prefix to inserted values |
 | `Retain(values...)` | Keep only given values |
 | `Suffix(suffix)` | Add suffix to inserted values |
+| `Quote()` | Quote values as double-quoted string literals |
+| `Escape()` | Escape values for embedding in a double-quoted string literal |
 | `UidF(f)` | Set UID per value (experimental) |
 | `ToA()` | Cast back to `Action` |
 | `ToMultiPartsA(dividers...)` | Convert values to multipart action |
