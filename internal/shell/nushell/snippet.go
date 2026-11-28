@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	shlex "github.com/carapace-sh/carapace-shlex/v2"
 	"github.com/carapace-sh/carapace/pkg/uid"
 	"github.com/spf13/cobra"
 )
@@ -33,7 +34,7 @@ $current.completions.external = ($current.completions.external
     | upsert completer { if $in == null { $%[1]v_completer } else { $in } })
 
 $env.config = $current
-`, sanitizeName(defaultName), uid.Executable(), "", snippetFuncs)
+`, sanitizeName(defaultName), shlex.Quote(uid.Executable(), shlex.Nushell), "", snippetFuncs)
 }
 
 // SnippetSingle creates a single-command nushell completion script.
@@ -41,6 +42,7 @@ $env.config = $current
 // (for multi-completer subcommands) and the full config setup is included.
 // When false, only the minimal completer function is generated (standalone mode).
 func SnippetSingle(command string, explicitCommand bool) string {
+
 	if explicitCommand {
 		return fmt.Sprintf(`let %[2]v_completer = {|place|
     # backwards compatible workaround for positional completer input, see nushell #18791
@@ -56,12 +58,12 @@ $current.completions.external = ($current.completions.external
     | upsert completer { if $in == null { $%[2]v_completer } else { $in } })
 
 $env.config = $current
-`, uid.Executable(), sanitizeName(command), command)
+`, shlex.Quote(uid.Executable(), shlex.Nushell), sanitizeName(command), shlex.Quote(command, shlex.Nushell))
 	}
 
 	return fmt.Sprintf(`let %v_completer = {|place| 
     # backwards compatible workaround for positional completer input, see nushell #18791
     let spans = (if ($place | describe) =~ "record" { $place.command } else { $place })
     %v _carapace nushell ...$spans | from json
-}`, sanitizeName(command), uid.Executable())
+}`, sanitizeName(command), shlex.Quote(uid.Executable(), shlex.Nushell))
 }

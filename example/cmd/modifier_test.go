@@ -202,6 +202,28 @@ func TestPrefix(t *testing.T) {
 	})
 }
 
+func TestQuote(t *testing.T) {
+	sandbox.Package(t, "github.com/carapace-sh/carapace/example")(func(s *sandbox.Sandbox) {
+		s.Run("modifier", "--quote", "").
+			Expect(carapace.ActionValues(
+				`1 "one"`,
+				`2 "two"`,
+			).Quote().
+				Usage("Quote()"))
+	})
+}
+
+func TestEscape(t *testing.T) {
+	sandbox.Package(t, "github.com/carapace-sh/carapace/example")(func(s *sandbox.Sandbox) {
+		s.Run("modifier", "--escape", "").
+			Expect(carapace.ActionValues(
+				`1 "one"`,
+				`2 "two"`,
+			).Escape().
+				Usage("Escape()"))
+	})
+}
+
 func TestFilterArgs(t *testing.T) {
 	sandbox.Package(t, "github.com/carapace-sh/carapace/example")(func(s *sandbox.Sandbox) {
 		s.Run("modifier", "--filterargs", "").
